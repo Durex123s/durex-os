@@ -3,6 +3,7 @@ import { Plus, Check, Trash2, FileText, Video, BookOpen, ClipboardList, Graduati
 import type { ResourceType, StudyResource } from '@/types';
 import { RESOURCE_TYPE_LABELS } from '@/types';
 import { useResources } from '@/hooks/useSubjects';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const TYPE_ICONS: Record<ResourceType, typeof FileText> = {
   note: NotebookPen,
@@ -25,6 +26,12 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
   const items = byType(type);
   const Icon = TYPE_ICONS[type];
   const trackable = TRACKABLE.includes(type);
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async (id: string) => {
+    if (!(await confirm('Supprimer cette ressource ?'))) return;
+    deleteResource(id);
+  };
 
   const handleAdd = () => {
     if (!title.trim()) return;
@@ -43,6 +50,7 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
 
   return (
     <div className="glass-card p-5">
+      {dialog}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 text-sm font-medium text-muted">
           <Icon className="w-4 h-4" />
@@ -72,7 +80,7 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
             )}
             <span className={`flex-1 truncate ${item.done ? 'line-through text-muted' : 'text-white'}`}>{item.title}</span>
             <button
-              onClick={() => deleteResource(item.id)}
+              onClick={() => handleDelete(item.id)}
               className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
               aria-label="Supprimer"
             >

@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { Plus, Trash2, Lightbulb } from 'lucide-react';
 import { useDevIdeas } from '@/hooks/useDevSpace';
+import { useConfirm } from '@/hooks/useConfirm';
 
 export function IdeasSection() {
   const { ideas, addIdea, deleteIdea } = useDevIdeas();
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async (id: string) => {
+    if (!(await confirm('Supprimer cette idée ?'))) return;
+    deleteIdea(id);
+  };
 
   const handleAdd = () => {
     if (!title.trim()) return;
@@ -16,6 +23,7 @@ export function IdeasSection() {
 
   return (
     <div className="space-y-4">
+      {dialog}
       <div className="glass-card p-4 flex flex-col sm:flex-row gap-2">
         <input
           value={title}
@@ -49,7 +57,7 @@ export function IdeasSection() {
               <p className="text-sm text-white">{idea.title}</p>
               {idea.note && <p className="text-xs text-muted mt-0.5">{idea.note}</p>}
             </div>
-            <button onClick={() => deleteIdea(idea.id)} className="text-muted hover:text-danger transition-colors shrink-0">
+            <button onClick={() => handleDelete(idea.id)} className="text-muted hover:text-danger transition-colors shrink-0">
               <Trash2 className="w-3.5 h-3.5" />
             </button>
           </div>

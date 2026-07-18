@@ -2,14 +2,21 @@ import { useRef, useState, type ChangeEvent } from 'react';
 import { User, Upload, Trash2 } from 'lucide-react';
 import { useAppSettings } from '@/hooks/useAppSettings';
 import { resizeImageToBase64 } from '@/utils/image';
+import { useConfirm } from '@/hooks/useConfirm';
 
 export function ProfileSection() {
   const { get, set, remove, loaded } = useAppSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
+  const { confirm, dialog } = useConfirm();
 
   const photo = get('profilePhoto');
   const name = get('profileName') ?? '';
+
+  const handleRemovePhoto = async () => {
+    if (!(await confirm('Retirer ta photo de profil ?'))) return;
+    remove('profilePhoto');
+  };
 
   const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -32,6 +39,7 @@ export function ProfileSection() {
 
   return (
     <div className="glass-card p-5">
+      {dialog}
       <h3 className="text-sm font-medium text-white mb-1">Profil</h3>
       <p className="text-xs text-muted mb-4">Ta photo et ton nom, affichés dans la sidebar.</p>
 
@@ -62,7 +70,7 @@ export function ProfileSection() {
             </button>
             {photo && (
               <button
-                onClick={() => remove('profilePhoto')}
+                onClick={handleRemovePhoto}
                 className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-base-600 text-danger hover:bg-danger/10 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />

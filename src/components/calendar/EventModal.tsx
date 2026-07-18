@@ -5,6 +5,7 @@ import type { CalendarEvent, EventCategory, EventPriority, ReminderOffset } from
 import { CATEGORY_LABELS, CATEGORY_COLORS, REMINDER_LABELS } from '@/types';
 import { format } from 'date-fns';
 import { ModalPortal } from '@/components/ui/ModalPortal';
+import { useConfirm } from '@/hooks/useConfirm';
 
 interface EventModalProps {
   initialDate: Date;
@@ -23,6 +24,7 @@ function toLocalInput(date: Date) {
 }
 
 export function EventModal({ initialDate, event, onClose, onSave, onDelete }: EventModalProps) {
+  const { confirm, dialog } = useConfirm();
   const defaultStart = new Date(initialDate);
   defaultStart.setMinutes(0, 0, 0);
   const defaultEnd = new Date(defaultStart);
@@ -61,6 +63,7 @@ export function EventModal({ initialDate, event, onClose, onSave, onDelete }: Ev
 
   return (
     <ModalPortal>
+      {dialog}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
         <div
           className="glass-card w-full max-w-md p-6 bg-base-900/95 max-h-[90vh] overflow-y-auto"
@@ -185,7 +188,8 @@ export function EventModal({ initialDate, event, onClose, onSave, onDelete }: Ev
           <div className="flex items-center justify-between mt-6">
             {event && onDelete ? (
               <button
-                onClick={() => {
+                onClick={async () => {
+                  if (!(await confirm('Supprimer cet événement ?'))) return;
                   onDelete(event.id);
                   onClose();
                 }}

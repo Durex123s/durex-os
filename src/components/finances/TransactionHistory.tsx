@@ -1,5 +1,6 @@
 import { Trash2, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import type { Transaction } from '@/types';
+import { useConfirm } from '@/hooks/useConfirm';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
@@ -14,8 +15,16 @@ export function TransactionHistory({
   onDelete: (id: string) => void;
   onEdit: (t: Transaction) => void;
 }) {
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async (id: string) => {
+    if (!(await confirm('Supprimer cette transaction ?'))) return;
+    onDelete(id);
+  };
+
   return (
     <div className="glass-card p-5">
+      {dialog}
       <h3 className="text-sm font-medium text-muted mb-4">Historique</h3>
       {transactions.length === 0 && <p className="text-sm text-muted">Aucune transaction pour l'instant.</p>}
       <ul className="space-y-1.5 max-h-80 overflow-y-auto">
@@ -45,7 +54,7 @@ export function TransactionHistory({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(t.id);
+                handleDelete(t.id);
               }}
               className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
               aria-label="Supprimer"

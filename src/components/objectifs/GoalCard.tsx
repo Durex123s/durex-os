@@ -1,5 +1,6 @@
 import { Trash2, Plus, Zap } from 'lucide-react';
 import type { AppGoal } from '@/types';
+import { useConfirm } from '@/hooks/useConfirm';
 
 interface GoalCardProps {
   goal: AppGoal & { current: number; progress: number };
@@ -9,9 +10,16 @@ interface GoalCardProps {
 
 export function GoalCard({ goal, onLog, onDelete }: GoalCardProps) {
   const isAuto = goal.autoSource !== null;
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async () => {
+    if (!(await confirm(`Supprimer l'objectif « ${goal.title} » ?`))) return;
+    onDelete();
+  };
 
   return (
     <div className="glass-card p-5 group">
+      {dialog}
       <div className="flex items-start justify-between mb-2">
         <div>
           <div className="flex items-center gap-1.5">
@@ -27,7 +35,7 @@ export function GoalCard({ goal, onLog, onDelete }: GoalCardProps) {
             {goal.mode === 'quotidien' ? " aujourd'hui" : ''}
           </p>
         </div>
-        <button onClick={onDelete} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity">
+        <button onClick={handleDelete} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity">
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>

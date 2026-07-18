@@ -201,13 +201,22 @@ function QuizPlayer({ quiz, onClose, onFinish }: { quiz: Quiz; onClose: () => vo
   );
 }
 
+import { useConfirm } from '@/hooks/useConfirm';
+
 export function QuizSection({ subjectId }: { subjectId: string }) {
   const { quizzes, addQuiz, deleteQuiz, recordAttempt } = useQuizzes(subjectId);
   const [building, setBuilding] = useState(false);
   const [playing, setPlaying] = useState<Quiz | null>(null);
+  const { confirm, dialog } = useConfirm();
+
+  const handleDeleteQuiz = async (id: string) => {
+    if (!(await confirm('Supprimer ce quiz ? Cette action est irréversible.'))) return;
+    deleteQuiz(id);
+  };
 
   return (
     <div className="glass-card p-5">
+      {dialog}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-muted">Quiz ({quizzes.length})</h3>
         <button onClick={() => setBuilding(true)} className="flex items-center gap-1 text-xs text-electric-400 hover:underline">
@@ -232,7 +241,7 @@ export function QuizSection({ subjectId }: { subjectId: string }) {
                 <RotateCcw className="w-3 h-3" />
                 Faire le quiz
               </button>
-              <button onClick={() => deleteQuiz(q.id)} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity p-1">
+              <button onClick={() => handleDeleteQuiz(q.id)} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity p-1">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>

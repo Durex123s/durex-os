@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Plus, X, Trash2, Flame, Clock, Trophy } from 'lucide-react';
 import { useHabits } from '@/hooks/useHabits';
 import { computeBestStreak } from '@/utils/discipline';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const COLOR_CHOICES = ['#C9A227', '#3FAE68', '#D99A3D', '#C0435B', '#4E8C82'];
 
@@ -14,6 +15,12 @@ export function HabitList() {
   const [reminderTime, setReminderTime] = useState('');
   const [editingReminder, setEditingReminder] = useState<string | null>(null);
   const [editTime, setEditTime] = useState('');
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async (id: string, habitName: string) => {
+    if (!(await confirm(`Supprimer « ${habitName} » ? Tout son historique de séries sera perdu.`))) return;
+    deleteHabit(id);
+  };
 
   const handleCreate = () => {
     if (!name.trim()) return;
@@ -42,6 +49,7 @@ export function HabitList() {
 
   return (
     <div className="glass-card p-5">
+      {dialog}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-muted">Habitudes</h3>
         <button onClick={() => setCreating(true)} className="text-muted hover:text-electric-400 transition-colors">
@@ -82,7 +90,7 @@ export function HabitList() {
                 <Clock className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={() => deleteHabit(h.id)}
+                onClick={() => handleDelete(h.id, h.name)}
                 className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
               >
                 <Trash2 className="w-3.5 h-3.5" />

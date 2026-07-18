@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, X, Trash2, Copy, Check } from 'lucide-react';
 import { useDevSnippets } from '@/hooks/useDevSpace';
 import { ModalPortal } from '@/components/ui/ModalPortal';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const LANGUAGES = ['TypeScript', 'JavaScript', 'Python', 'HTML', 'CSS', 'SQL', 'Autre'];
 
@@ -12,6 +13,12 @@ export function SnippetsSection() {
   const [language, setLanguage] = useState(LANGUAGES[0]);
   const [code, setCode] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirm();
+
+  const handleDelete = async (id: string) => {
+    if (!(await confirm('Supprimer ce snippet ?'))) return;
+    deleteSnippet(id);
+  };
 
   const handleCreate = () => {
     if (!title.trim() || !code.trim()) return;
@@ -33,6 +40,7 @@ export function SnippetsSection() {
 
   return (
     <div className="space-y-4">
+      {dialog}
       <div className="flex justify-end">
         <button
           onClick={() => setCreating(true)}
@@ -55,7 +63,7 @@ export function SnippetsSection() {
                 <button onClick={() => handleCopy(s.id, s.code)} className="text-muted hover:text-electric-400 transition-colors" aria-label="Copier">
                   {copiedId === s.id ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
-                <button onClick={() => deleteSnippet(s.id)} className="text-muted hover:text-danger transition-colors" aria-label="Supprimer">
+                <button onClick={() => handleDelete(s.id)} className="text-muted hover:text-danger transition-colors" aria-label="Supprimer">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>

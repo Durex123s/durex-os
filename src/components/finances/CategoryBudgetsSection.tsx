@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Trash2, AlertTriangle } from 'lucide-react';
 import { useCategoryBudgets } from '@/hooks/useCategoryBudgets';
 import { DEFAULT_EXPENSE_CATEGORIES, type BudgetPeriod } from '@/types';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const PERIOD_LABELS: Record<BudgetPeriod, string> = {
   jour: 'par jour',
@@ -19,6 +20,7 @@ export function CategoryBudgetsSection() {
   const [category, setCategory] = useState(DEFAULT_EXPENSE_CATEGORIES[0]);
   const [period, setPeriod] = useState<BudgetPeriod>('mois');
   const [limit, setLimit] = useState('');
+  const { confirm, dialog } = useConfirm();
 
   const availableCategories = DEFAULT_EXPENSE_CATEGORIES.filter(
     (c) => !budgets.some((b) => b.category === c)
@@ -32,8 +34,14 @@ export function CategoryBudgetsSection() {
     setAdding(false);
   }
 
+  async function handleDelete(id: string) {
+    if (!(await confirm('Supprimer ce budget ?'))) return;
+    deleteBudget(id);
+  }
+
   return (
     <div className="glass-card p-5 space-y-4">
+      {dialog}
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-muted">Budgets par catégorie</h3>
         {availableCategories.length > 0 && (
@@ -102,7 +110,7 @@ export function CategoryBudgetsSection() {
                     <span className={over ? 'text-danger' : 'text-muted'}>
                       {money(b.spent)} / {money(b.limit)}
                     </span>
-                    <button onClick={() => deleteBudget(b.id)} aria-label="Supprimer">
+                    <button onClick={() => handleDelete(b.id)} aria-label="Supprimer">
                       <Trash2 className="w-3.5 h-3.5 text-muted hover:text-danger" />
                     </button>
                   </div>

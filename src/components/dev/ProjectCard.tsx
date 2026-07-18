@@ -3,6 +3,7 @@ import { Github, Trash2, Plus, Check } from 'lucide-react';
 import type { DevProject, ProjectStatus } from '@/types';
 import { useDevProjects } from '@/hooks/useDevSpace';
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const STATUS_LABELS: Record<ProjectStatus, string> = { idee: 'Idée', 'en-cours': 'En cours', termine: 'Terminé' };
 // Couleurs alignées sur le thème plutôt que codées en dur :
@@ -17,6 +18,7 @@ export function ProjectCard({ project }: { project: DevProject }) {
   const { deleteProject, addChecklistItem, toggleChecklistItem } = useDevProjects();
   const [addingItem, setAddingItem] = useState(false);
   const [itemText, setItemText] = useState('');
+  const { confirm, dialog } = useConfirm();
 
   const done = project.checklist.filter((i) => i.done).length;
   const progress = project.checklist.length ? Math.round((done / project.checklist.length) * 100) : 0;
@@ -28,8 +30,14 @@ export function ProjectCard({ project }: { project: DevProject }) {
     setAddingItem(false);
   };
 
+  const handleDelete = async () => {
+    if (!(await confirm(`Supprimer le projet « ${project.name} » et sa checklist ?`))) return;
+    deleteProject(project.id);
+  };
+
   return (
     <div className="glass-card p-5">
+      {dialog}
       <div className="flex items-start justify-between mb-2">
         <div>
           <div className="flex items-center gap-2">
@@ -50,7 +58,7 @@ export function ProjectCard({ project }: { project: DevProject }) {
             </a>
           )}
         </div>
-        <button onClick={() => deleteProject(project.id)} className="text-muted hover:text-danger transition-colors">
+        <button onClick={handleDelete} className="text-muted hover:text-danger transition-colors">
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>

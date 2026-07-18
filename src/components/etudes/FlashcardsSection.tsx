@@ -3,6 +3,7 @@ import { Plus, ChevronLeft, ChevronRight, RotateCw, Trash2 } from 'lucide-react'
 import { useFlashcards } from '@/hooks/useFlashcards';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/hooks/useConfirm';
 
 export function FlashcardsSection({ subjectId }: { subjectId: string }) {
   const { cards, addCard, deleteCard } = useFlashcards(subjectId);
@@ -11,6 +12,7 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
   const [creating, setCreating] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const { confirm, dialog } = useConfirm();
 
   const current = cards[index];
 
@@ -27,8 +29,9 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
     setCreating(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!current) return;
+    if (!(await confirm('Supprimer cette fiche de révision ?'))) return;
     deleteCard(current.id);
     setIndex((i) => Math.max(0, i - 1));
     setFlipped(false);
@@ -36,6 +39,7 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
 
   return (
     <div className="glass-card p-5">
+      {dialog}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-muted">Fiches de révision ({cards.length})</h3>
         <Button variant="ghost" size="sm" onClick={() => setCreating(true)}>

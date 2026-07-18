@@ -4,12 +4,14 @@ import { useAssistantChat } from '@/hooks/useAssistantChat';
 import { ChatBubble } from '@/components/assistant/ChatBubble';
 import { QuickActions } from '@/components/assistant/QuickActions';
 import { VoiceInputButton } from '@/components/assistant/VoiceInputButton';
+import { useConfirm } from '@/hooks/useConfirm';
 
 export function Assistant() {
   const { messages, sendMessage, clearChat } = useAssistantChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { confirm, dialog } = useConfirm();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -24,15 +26,21 @@ export function Assistant() {
     setSending(false);
   };
 
+  const handleClearChat = async () => {
+    if (!(await confirm('Effacer toute la conversation ? Cette action est irréversible.'))) return;
+    clearChat();
+  };
+
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)]">
+      {dialog}
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="font-display text-2xl font-semibold text-white">Assistant IA</h1>
           <p className="text-muted text-sm mt-1">Planification, analyse, études — par texte ou par voix.</p>
         </div>
         {messages.length > 0 && (
-          <button onClick={clearChat} className="text-muted hover:text-danger transition-colors" aria-label="Effacer la conversation">
+          <button onClick={handleClearChat} className="text-muted hover:text-danger transition-colors" aria-label="Effacer la conversation">
             <Trash2 className="w-4 h-4" />
           </button>
         )}
