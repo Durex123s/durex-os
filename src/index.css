@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-950: 11 10 8;
+    --color-bg-900: 19 18 16;
+    --color-bg-800: 28 26 23;
+    --color-bg-700: 38 35 31;
+    --color-bg-600: 55 51 44;
+    --color-text: 247 244 238;
+    --color-muted: 158 150 136;
+    --color-on-accent: 11 10 8;
+    --color-accent: 201 162 39;
+    --font-scale: 1;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  .light {
+    --color-bg-950: 250 248 244;
+    --color-bg-900: 255 255 253;
+    --color-bg-800: 242 239 232;
+    --color-bg-700: 227 222 210;
+    --color-bg-600: 208 201 185;
+    --color-text: 26 23 18;
+    --color-muted: 109 102 89;
+    --color-on-accent: 11 10 8;
+    --color-accent: 201 162 39;
+  }
+
+  * {
+    @apply border-base-700;
+  }
+  html {
+    color-scheme: dark;
+    font-size: calc(16px * var(--font-scale, 1));
+  }
+  html.light {
+    color-scheme: light;
+  }
+  body {
+    font-family: var(--font-body);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(201, 162, 39, 0.08), transparent 45%),
+      radial-gradient(circle at 100% 30%, rgba(184, 188, 194, 0.05), transparent 40%),
+      rgb(var(--color-bg-950));
+    min-height: 100vh;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-base-600 rounded-full;
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.electric.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply relative bg-base-900/60 backdrop-blur-xs border border-white/5 rounded-xl2 overflow-hidden;
+    box-shadow:
+      0 8px 30px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.55), transparent);
+  }
+  .glass-card:hover {
+    @apply border-electric-500/30;
+  }
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted transition-colors duration-150;
+  }
+  .nav-item:hover {
+    @apply text-white bg-white/5;
+  }
+  .nav-item-active {
+    @apply text-white bg-electric-500/10 border border-electric-500/30 shadow-glow;
+  }
+
+  button:not(:disabled),
+  a[href],
+  [role='button'] {
+    @apply transition-transform duration-100 active:scale-[0.97];
+  }
+
+  .ripple-host {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple-effect {
+    position: absolute;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(0);
+    animation: ripple-grow 550ms ease-out;
+    pointer-events: none;
+  }
+  @keyframes ripple-grow {
+    to {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

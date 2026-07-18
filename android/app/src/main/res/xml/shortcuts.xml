@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="nouvelle_tache"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_new_task_short"
+        android:shortcutLongLabel="@string/shortcut_new_task_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.durex.os"
+            android:targetClass="com.durex.os.MainActivity"
+            android:data="durexos://nouvelle-tache" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="pomodoro"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_pomodoro_short"
+        android:shortcutLongLabel="@string/shortcut_pomodoro_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.durex.os"
+            android:targetClass="com.durex.os.MainActivity"
+            android:data="durexos://pomodoro" />
+    </shortcut>
+</shortcuts>

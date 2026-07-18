@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Veyrion</string>
+    <string name="title_activity_main">Veyrion</string>
+    <string name="package_name">com.veyrion.os</string>
+    <string name="custom_url_scheme">com.veyrion.os</string>
+    <string name="shortcut_new_task_short">Nouvelle tâche</string>
+    <string name="shortcut_new_task_long">Ajouter une nouvelle tâche</string>
+    <string name="shortcut_pomodoro_short">Pomodoro</string>
+    <string name="shortcut_pomodoro_long">Démarrer une session Pomodoro</string>
+</resources>

@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.vite/
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+*.log
+.env
+tsconfig.tsbuildinfo
+customization_dump.txt
+extract_customization.sh
+
+# Signature Android — ne JAMAIS committer une clé de signature ou un secret.
+*.keystore
+*.jks
+*.b64
+keystore.properties
+
+# Sorties d'outils d'analyse / scripts ponctuels — utiles en local, pas dans le repo.
+stats.html
+design_dump.txt

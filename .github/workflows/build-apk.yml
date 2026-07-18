@@ -1,0 +1,64 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Installer Java (nécessaire pour Gradle/Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Installer les dépendances
+        run: npm install
+
+      - name: Construire l'app web
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Synchroniser Capacitor avec Android
+        run: node_modules/.bin/cap sync android
+
+      - name: Préparer la signature (décodée depuis les secrets, jamais committée)
+        working-directory: android
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > veyrion-release.keystore
+          cat > keystore.properties << EOF
+          storeFile=veyrion-release.keystore
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Compiler l'APK (debug, installable directement)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Nettoyer les fichiers de signature (sécurité)
+        if: always()
+        working-directory: android
+        run: rm -f veyrion-release.keystore keystore.properties
+
+      - name: Publier l'APK générée
+        uses: actions/upload-artifact@v4
+        with:
+          name: durex-os-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
