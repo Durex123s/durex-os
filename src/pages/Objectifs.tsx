@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Target } from 'lucide-react';
 import { useGoals } from '@/hooks/useGoals';
 import { GoalCard } from '@/components/objectifs/GoalCard';
 import { GoalModal } from '@/components/objectifs/GoalModal';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export function Objectifs() {
   const { goals, addGoal, deleteGoal, logProgress } = useGoals();
@@ -24,11 +25,28 @@ export function Objectifs() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {goals.map((g) => (
-          <GoalCard key={g.id} goal={g} onLog={(amount) => logProgress(g.id, amount)} onDelete={() => deleteGoal(g.id)} />
-        ))}
-      </div>
+      {goals.length === 0 ? (
+        <EmptyState
+          icon={Target}
+          title="Aucun objectif pour l'instant"
+          description="Fixe-toi un objectif d'épargne, d'étude ou d'habitude — le suivi se fait automatiquement quand c'est possible."
+          action={
+            <button
+              onClick={() => setModalOpen(true)}
+              className="flex items-center gap-1.5 bg-electric-500 hover:bg-electric-600 text-onAccent font-medium text-sm px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Créer un objectif
+            </button>
+          }
+        />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {goals.map((g) => (
+            <GoalCard key={g.id} goal={g} onLog={(amount) => logProgress(g.id, amount)} onDelete={() => deleteGoal(g.id)} />
+          ))}
+        </div>
+      )}
 
       {modalOpen && <GoalModal onClose={() => setModalOpen(false)} onSave={addGoal} />}
     </div>

@@ -48,6 +48,11 @@ export function IdeasSection() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {ideas.length === 0 && (
+          <p className="text-sm text-muted col-span-full text-center py-6">
+            Aucune idée notée — écris-la ci-dessus avant de l'oublier.
+          </p>
+        )}
         {ideas.map((idea) => (
           <div key={idea.id} className="glass-card p-4 flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-electric-500/15 text-electric-400 flex items-center justify-center shrink-0">

@@ -52,6 +52,11 @@ export function SnippetsSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {snippets.length === 0 && (
+          <p className="text-sm text-muted col-span-full text-center py-6">
+            Aucun snippet enregistré — colle un bout de code utile pour le retrouver plus tard.
+          </p>
+        )}
         {snippets.map((s) => (
           <div key={s.id} className="glass-card p-4">
             <div className="flex items-center justify-between mb-2">

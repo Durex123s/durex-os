@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, BookOpen } from 'lucide-react';
 import { useSubjects } from '@/hooks/useSubjects';
 import { SubjectCard } from '@/components/etudes/SubjectCard';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const ICON_CHOICES = ['BookOpen', 'Cpu', 'Sigma', 'Languages', 'FlaskConical', 'Landmark', 'Palette', 'Dumbbell'];
 const COLOR_CHOICES = ['#C9A227', '#3FAE68', '#D99A3D', '#C0435B', '#4E8C82'];
@@ -36,11 +37,28 @@ export function Etudes() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {subjects.map((s) => (
-          <SubjectCard key={s.id} subject={s} />
-        ))}
-      </div>
+      {subjects.length === 0 ? (
+        <EmptyState
+          icon={BookOpen}
+          title="Aucune matière pour l'instant"
+          description="Crée ta première matière pour y ranger cours, fiches et quiz."
+          action={
+            <button
+              onClick={() => setCreating(true)}
+              className="flex items-center gap-1.5 bg-electric-500 hover:bg-electric-600 text-onAccent font-medium text-sm px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Nouvelle matière
+            </button>
+          }
+        />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {subjects.map((s) => (
+            <SubjectCard key={s.id} subject={s} />
+          ))}
+        </div>
+      )}
 
       {creating && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setCreating(false)}>

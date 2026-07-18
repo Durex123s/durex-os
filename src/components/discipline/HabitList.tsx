@@ -58,6 +58,11 @@ export function HabitList() {
       </div>
 
       <ul className="space-y-2">
+        {habits.length === 0 && (
+          <p className="text-sm text-muted text-center py-6">
+            Aucune habitude suivie — touche "+" pour construire ta régularité jour après jour.
+          </p>
+        )}
         {habits.map((h) => {
           const best = computeBestStreak(h.completedDates);
           return (
