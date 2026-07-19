@@ -46,11 +46,15 @@ jobs:
           keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
           EOF
 
-      - name: Compiler l'APK (debug, installable directement)
+      - name: Compiler l'APK (installable directement sur un téléphone)
         working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
+
+      - name: Compiler l'AAB de production (pour soumission au Play Store)
+        working-directory: android
+        run: ./gradlew bundleRelease
 
       - name: Nettoyer les fichiers de signature (sécurité)
         if: always()
@@ -60,5 +64,11 @@ jobs:
       - name: Publier l'APK générée
         uses: actions/upload-artifact@v4
         with:
-          name: durex-os-apk
+          name: veyrion-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Publier l'AAB de production
+        uses: actions/upload-artifact@v4
+        with:
+          name: veyrion-aab-playstore
+          path: android/app/build/outputs/bundle/release/app-release.aab

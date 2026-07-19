@@ -8,10 +8,10 @@ if (hasKeystoreProperties) {
 }
 
 android {
-    namespace = "com.durex.os"
+    namespace = "com.veyrion.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.durex.os"
+        applicationId "com.veyrion.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
@@ -24,29 +24,32 @@ android {
         }
     }
     signingConfigs {
-        debug {
+        // Une seule config de signature, réutilisée par debug ET release —
+        // c'est la même clé partout, ce qui permet d'installer indifféremment
+        // un build de test (debug) ou de production (release) sans conflit
+        // de signature sur un même appareil.
+        release {
             if (hasKeystoreProperties) {
                 storeFile rootProject.file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
             }
-            // Si keystore.properties est absent (ex: clone frais sans avoir
-            // encore configuré la signature locale), Gradle retombe sur la
-            // clé de debug générée automatiquement par le SDK Android —
-            // suffisant pour tester, mais incompatible avec la mise à jour
-            // d'une app déjà installée avec la vraie clé de signature.
         }
     }
     buildTypes {
         debug {
             if (hasKeystoreProperties) {
-                signingConfig signingConfigs.debug
+                signingConfig signingConfigs.release
             }
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasKeystoreProperties) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

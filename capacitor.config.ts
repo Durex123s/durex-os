@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.durex.os',
+  appId: 'com.veyrion.app',
   appName: 'Veyrion',
   webDir: 'dist',
   server: {
