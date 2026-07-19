@@ -7,11 +7,38 @@ export const TABLE_NAMES = [
   'devProjects', 'devSnippets', 'devIdeas',
 ] as const;
 
+// `attachments` contient un champ Blob (le fichier lui-même), qui ne survit
+// pas à JSON.stringify (il devient "{}"). On le convertit en base64 à
+// l'export et on le reconstruit en Blob à l'import, séparément des autres
+// tables qui sont de simples objets sérialisables.
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function base64ToBlob(dataUrl: string, mimeType: string): Blob {
+  const base64 = dataUrl.includes(',') ? dataUrl.split(',')[1] : dataUrl;
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new Blob([bytes], { type: mimeType });
+}
+
 export async function dumpAllTables(): Promise<Record<string, unknown>> {
-  const dump: Record<string, unknown> = { exportedAt: new Date().toISOString(), version: 1 };
+  const dump: Record<string, unknown> = { exportedAt: new Date().toISOString(), version: 2 };
   for (const table of TABLE_NAMES) {
     dump[table] = await (db as any)[table].toArray();
   }
+
+  const attachments = await db.attachments.toArray();
+  dump.attachments = await Promise.all(
+    attachments.map(async (a) => ({ ...a, blob: await blobToBase64(a.blob) }))
+  );
+
   return dump;
 }
 
@@ -24,6 +51,16 @@ export async function restoreDump(dump: Record<string, unknown>): Promise<{ tabl
         await (db as any)[table].bulkAdd(dump[table]);
         tablesRestored += 1;
       }
+    }
+
+    if (Array.isArray(dump.attachments)) {
+      const restored = (dump.attachments as any[]).map((a) => ({
+        ...a,
+        blob: typeof a.blob === 'string' ? base64ToBlob(a.blob, a.mimeType) : a.blob,
+      }));
+      await db.attachments.clear();
+      await db.attachments.bulkAdd(restored);
+      tablesRestored += 1;
     }
   });
   return { tablesRestored };
