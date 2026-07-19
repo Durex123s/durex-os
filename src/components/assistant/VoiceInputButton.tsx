@@ -7,15 +7,14 @@ import clsx from 'clsx';
 // bouton proprement si absente plutôt que d'afficher une fonctionnalité cassée.
 export function VoiceInputButton({ onResult }: { onResult: (text: string) => void }) {
   const [listening, setListening] = useState(false);
-  const [supported, setSupported] = useState(true);
+  const [supported] = useState(
+    () => Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
+  );
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
+    if (!supported) return;
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setSupported(false);
-      return;
-    }
     const recognition = new SpeechRecognition();
     recognition.lang = 'fr-FR';
     recognition.continuous = false;
@@ -30,7 +29,7 @@ export function VoiceInputButton({ onResult }: { onResult: (text: string) => voi
     recognition.onend = () => setListening(false);
 
     recognitionRef.current = recognition;
-  }, [onResult]);
+  }, [onResult, supported]);
 
   if (!supported) return null;
 

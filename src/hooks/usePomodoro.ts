@@ -25,17 +25,26 @@ function parseDurations(raw: string | null): Record<PomodoroType, number> {
 
 export function usePomodoro() {
   const { get, set } = useAppSettings();
-  const DURATIONS = useMemo(() => parseDurations(get(SETTING_KEY)), [get(SETTING_KEY)]);
+  const rawDurations = get(SETTING_KEY);
+  const DURATIONS = useMemo(() => parseDurations(rawDurations), [rawDurations]);
 
   const [type, setType] = useState<PomodoroType>('etude');
   const [secondsLeft, setSecondsLeft] = useState(DURATIONS.etude * 60);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const durationsRef = useRef(DURATIONS);
-  durationsRef.current = DURATIONS;
+
+  useEffect(() => {
+    durationsRef.current = DURATIONS;
+  }, [DURATIONS]);
 
   useEffect(() => {
     if (!running) {
+      // Resynchronise le compte à rebours affiché quand la durée réglée
+      // change pendant que le minuteur est à l'arrêt (ex: réglage modifié
+      // dans les paramètres) — ce n'est pas un cas "dérivable" simplement,
+      // secondsLeft reste un vrai état décrémenté chaque seconde ailleurs.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSecondsLeft(DURATIONS[type] * 60);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

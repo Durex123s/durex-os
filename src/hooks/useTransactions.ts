@@ -137,6 +137,11 @@ export function useSavingsGoals() {
     } else {
       cancelWeeklySavingsReminder();
     }
+    // Volontairement limité à goals?.length : seul le passage 0 <-> >0
+    // doit re-déclencher la (dé)programmation du rappel. Dépendre du
+    // tableau entier reprogrammerait inutilement à chaque modification
+    // d'un montant d'épargne existant.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [goals?.length]);
 
   async function addGoal(goal: SavingsGoal) {

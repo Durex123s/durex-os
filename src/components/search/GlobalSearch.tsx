@@ -14,19 +14,23 @@ interface ResultItem {
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
+// Référence stable pour éviter qu'un `?? []` recrée un nouveau tableau à
+// chaque rendu (ce qui invaliderait le useMemo plus bas à chaque fois).
+const EMPTY: never[] = [];
+
 export function GlobalSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
-  const tasks = useLiveQuery(() => db.tasks.toArray(), []) ?? [];
-  const resources = useLiveQuery(() => db.resources.toArray(), []) ?? [];
-  const subjects = useLiveQuery(() => db.subjects.toArray(), []) ?? [];
-  const transactions = useLiveQuery(() => db.transactions.toArray(), []) ?? [];
-  const attachments = useLiveQuery(() => db.attachments.toArray(), []) ?? [];
-  const devProjects = useLiveQuery(() => db.devProjects.toArray(), []) ?? [];
-  const habits = useLiveQuery(() => db.habits.toArray(), []) ?? [];
-  const goals = useLiveQuery(() => db.goals.toArray(), []) ?? [];
+  const tasks = useLiveQuery(() => db.tasks.toArray(), []) ?? EMPTY;
+  const resources = useLiveQuery(() => db.resources.toArray(), []) ?? EMPTY;
+  const subjects = useLiveQuery(() => db.subjects.toArray(), []) ?? EMPTY;
+  const transactions = useLiveQuery(() => db.transactions.toArray(), []) ?? EMPTY;
+  const attachments = useLiveQuery(() => db.attachments.toArray(), []) ?? EMPTY;
+  const devProjects = useLiveQuery(() => db.devProjects.toArray(), []) ?? EMPTY;
+  const habits = useLiveQuery(() => db.habits.toArray(), []) ?? EMPTY;
+  const goals = useLiveQuery(() => db.goals.toArray(), []) ?? EMPTY;
 
   const close = () => {
     setOpen(false);
