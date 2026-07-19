@@ -1,5 +1,6 @@
 import { WidgetCard } from './WidgetCard';
 import { CircleGauge } from 'lucide-react';
+import { useAnimatedNumber } from '@/components/ui/AnimatedNumber';
 
 export function DayProgress() {
   const now = new Date();
@@ -11,10 +12,11 @@ export function DayProgress() {
     Math.min(totalMinutes, (now.getHours() - startHour) * 60 + now.getMinutes())
   );
   const percent = Math.round((elapsed / totalMinutes) * 100);
+  const animatedPercent = useAnimatedNumber(percent);
 
   const radius = 42;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percent / 100) * circumference;
+  const offset = circumference - (animatedPercent / 100) * circumference;
 
   return (
     <WidgetCard title="Progression de la journée" icon={<CircleGauge className="w-4 h-4" />}>
@@ -26,16 +28,15 @@ export function DayProgress() {
             cy="50"
             r={radius}
             fill="none"
-            stroke="#C9A227"
+            stroke="rgb(var(--color-accent))"
             strokeWidth="8"
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             transform="rotate(-90 50 50)"
-            style={{ transition: 'stroke-dashoffset 0.6s ease' }}
           />
           <text x="50" y="55" textAnchor="middle" fontSize="20" fontWeight="600" style={{ fill: 'rgb(var(--color-text))' }}>
-            {percent}%
+            {animatedPercent}%
           </text>
         </svg>
         <div className="text-sm text-muted">

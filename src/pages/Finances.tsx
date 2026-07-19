@@ -9,6 +9,7 @@ import { CategoryBudgetsSection } from '@/components/finances/CategoryBudgetsSec
 import { CategoryChart } from '@/components/finances/CategoryChart';
 import { SavingsGoalsWidget } from '@/components/finances/SavingsGoalsWidget';
 import { TransactionHistory } from '@/components/finances/TransactionHistory';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 
 export function Finances() {
   const [period, setPeriod] = useState<Period>('total');
@@ -41,22 +42,29 @@ export function Finances() {
           <p className="text-muted text-[11px] mt-0.5">Revenus du jour moins dépenses du jour</p>
         </div>
         <p className={`text-xl font-display font-semibold ${todayDisponible >= 0 ? 'text-success' : 'text-danger'}`}>
-          {todayDisponible >= 0 ? '+' : ''}{Math.round(todayDisponible).toLocaleString('fr-FR')} FCFA
+          {todayDisponible >= 0 ? '+' : ''}
+          <AnimatedNumber value={Math.round(todayDisponible)} format={(n) => `${n.toLocaleString('fr-FR')} FCFA`} />
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="glass-card p-5">
           <p className="text-xs text-muted">Solde actuel</p>
-          <p className="text-2xl font-display font-semibold text-white mt-1">{solde.toLocaleString('fr-FR')} FCFA</p>
+          <p className="text-2xl font-display font-semibold text-white mt-1">
+            <AnimatedNumber value={solde} format={(n) => `${n.toLocaleString('fr-FR')} FCFA`} />
+          </p>
         </div>
         <div className="glass-card p-5">
           <p className="text-xs text-muted">Revenus ({period})</p>
-          <p className="text-2xl font-display font-semibold text-success mt-1">+{periodRevenus.toLocaleString('fr-FR')}</p>
+          <p className="text-2xl font-display font-semibold text-success mt-1">
+            +<AnimatedNumber value={periodRevenus} />
+          </p>
         </div>
         <div className="glass-card p-5">
           <p className="text-xs text-muted">Dépenses ({period})</p>
-          <p className="text-2xl font-display font-semibold text-danger mt-1">-{periodDepenses.toLocaleString('fr-FR')}</p>
+          <p className="text-2xl font-display font-semibold text-danger mt-1">
+            -<AnimatedNumber value={periodDepenses} />
+          </p>
         </div>
       </div>
 

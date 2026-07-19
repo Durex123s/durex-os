@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { WidgetCard } from './WidgetCard';
 import { Wallet } from 'lucide-react';
 import { useTransactions } from '@/hooks/useTransactions';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import clsx from 'clsx';
 
 function formatFCFA(value: number) {
@@ -25,7 +26,9 @@ export function FinanceWidget() {
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
           <p className="text-xs text-muted">Solde actuel</p>
-          <p className="text-lg font-display font-semibold text-white">{formatFCFA(solde)}</p>
+          <p className="text-lg font-display font-semibold text-white">
+            <AnimatedNumber value={Math.round(solde)} format={formatFCFA} />
+          </p>
         </div>
         <div>
           <p className="text-xs text-muted">Revenus (total)</p>
