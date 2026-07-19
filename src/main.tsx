@@ -48,8 +48,9 @@ if (!Capacitor.isNativePlatform()) {
   }
 }
 
-import('./services/notifications').then(({ initNotifications }) => {
+import('./services/notifications').then(({ initNotifications, resyncAllReminders }) => {
   initNotifications();
+  resyncAllReminders();
 });
 
 import('./services/updateCheck').then(({ checkForUpdate }) => {

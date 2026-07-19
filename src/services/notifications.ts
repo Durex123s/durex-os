@@ -1,6 +1,7 @@
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
 import { router } from '@/router';
+import { db } from '@/database/db';
 
 let permissionRequested = false;
 let tapListenerRegistered = false;
@@ -14,6 +15,40 @@ export async function initNotifications() {
   const { display } = await LocalNotifications.checkPermissions();
   if (display !== 'granted') {
     await LocalNotifications.requestPermissions();
+  }
+}
+
+/**
+ * Reprogramme tous les rappels à partir des données actuelles (habitudes,
+ * tâches, épargne). Nécessaire car Android efface les notifications
+ * programmées lors d'une désinstallation/réinstallation (ex: mise à jour
+ * de la clé de signature) ou d'un vidage des données de l'app — sans ça,
+ * les rappels déjà configurés restent silencieusement inactifs. Idempotent
+ * (peut être appelée à chaque ouverture de l'app sans effet de bord).
+ */
+export async function resyncAllReminders() {
+  if (!Capacitor.isNativePlatform()) return;
+  try {
+    const [habits, tasks] = await Promise.all([db.habits.toArray(), db.tasks.toArray()]);
+
+    await Promise.all(
+      habits
+        .filter((h) => h.reminderTime)
+        .map((h) => scheduleHabitReminder(h.id, h.name, h.reminderTime as string))
+    );
+
+    await Promise.all(
+      tasks
+        .filter((t) => t.dueTime && !t.done)
+        .map((t) => scheduleTaskReminder(t.id, t.title, t.dueTime as string))
+    );
+
+    const goalsCount = await db.savingsGoals.count();
+    if (goalsCount > 0) {
+      await scheduleWeeklySavingsReminder();
+    }
+  } catch (e) {
+    console.warn('[notifications] Resynchronisation des rappels impossible :', e);
   }
 }
 
