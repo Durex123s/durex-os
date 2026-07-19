@@ -16,6 +16,7 @@ const Dev = lazy(() => import('@/pages/Dev').then(m => ({ default: m.Dev })));
 const Analytics = lazy(() => import('@/pages/Analytics').then(m => ({ default: m.Analytics })));
 const Parametres = lazy(() => import('@/pages/Parametres').then(m => ({ default: m.Parametres })));
 const Fichiers = lazy(() => import('@/pages/Fichiers').then(m => ({ default: m.Fichiers })));
+const Nouveautes = lazy(() => import('@/pages/Nouveautes').then(m => ({ default: m.Nouveautes })));
 
 function withSuspense(el: React.ReactNode) {
   return <Suspense fallback={<PageLoader />}>{el}</Suspense>;
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       { path: 'analytics', element: withSuspense(<Analytics />) },
       { path: 'parametres', element: withSuspense(<Parametres />) },
       { path: 'fichiers', element: withSuspense(<Fichiers />) },
+      { path: 'nouveautes', element: withSuspense(<Nouveautes />) },
     ],
   },
 ]);
