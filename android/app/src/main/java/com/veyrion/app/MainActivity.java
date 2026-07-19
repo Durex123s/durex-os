@@ -1,4 +1,4 @@
-package com.durex.os;
+package com.veyrion.app;
 
 import com.getcapacitor.BridgeActivity;
 
