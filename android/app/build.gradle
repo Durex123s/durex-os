@@ -47,9 +47,14 @@ android {
             if (hasKeystoreProperties) {
                 signingConfig signingConfigs.release
             }
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Désactivé : la minification (R8) supprimait une classe dont
+            // Capacitor a besoin au démarrage, provoquant un plantage
+            // immédiat au lancement. Le gain de taille est de toute façon
+            // marginal ici (l'app est presque entièrement une WebView dont
+            // le JS est déjà minifié séparément par Vite) — le risque ne
+            // valait pas le bénéfice.
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
