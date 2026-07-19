@@ -56,6 +56,10 @@ jobs:
         working-directory: android
         run: ./gradlew bundleRelease
 
+      - name: Compiler l'APK release (pour tester le build de prod avant soumission)
+        working-directory: android
+        run: ./gradlew assembleRelease
+
       - name: Nettoyer les fichiers de signature (sécurité)
         if: always()
         working-directory: android
@@ -72,3 +76,9 @@ jobs:
         with:
           name: veyrion-aab-playstore
           path: android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Publier l'APK release (test avant soumission)
+        uses: actions/upload-artifact@v4
+        with:
+          name: veyrion-apk-release
+          path: android/app/build/outputs/apk/release/app-release.apk
