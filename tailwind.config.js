@@ -32,11 +32,12 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       borderRadius: {
-        xl2: '1.25rem',
+        xl2: '1rem',
+        xl3: '1.375rem',
       },
       boxShadow: {
         glow: '0 0 24px rgb(var(--color-accent) / 0.25)',
-        card: '0 8px 30px rgba(0, 0, 0, 0.45)',
+        card: '0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 16px -4px rgba(0, 0, 0, 0.4), 0 24px 40px -12px rgba(0, 0, 0, 0.55)',
       },
       backdropBlur: {
         xs: '2px',
