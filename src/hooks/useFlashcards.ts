@@ -8,9 +8,12 @@ export function useFlashcards(subjectId: string) {
   async function addCard(card: Flashcard) {
     await db.flashcards.add(card);
   }
+  async function updateCard(id: string, changes: Partial<Flashcard>) {
+    await db.flashcards.update(id, changes);
+  }
   async function deleteCard(id: string) {
     await db.flashcards.delete(id);
   }
 
-  return { cards: cards ?? [], addCard, deleteCard };
+  return { cards: cards ?? [], addCard, updateCard, deleteCard };
 }

@@ -109,6 +109,11 @@ export interface Flashcard {
   subjectId: string;
   question: string;
   answer: string;
+  /** Répétition espacée (SM-2 simplifié) — undefined = jamais révisée, à réviser en priorité. */
+  dueDate?: string; // ISO — prochaine date de révision prévue
+  interval?: number; // jours avant la prochaine révision
+  easeFactor?: number; // facilité mémorisée (défaut 2.5)
+  repetitions?: number; // nombre de révisions réussies d'affilée
 }
 
 export interface QuizQuestion {

@@ -29,7 +29,11 @@ export async function initNotifications() {
 export async function resyncAllReminders() {
   if (!Capacitor.isNativePlatform()) return;
   try {
-    const [habits, tasks] = await Promise.all([db.habits.toArray(), db.tasks.toArray()]);
+    const [habits, tasks, resources] = await Promise.all([
+      db.habits.toArray(),
+      db.tasks.toArray(),
+      db.resources.toArray(),
+    ]);
 
     await Promise.all(
       habits
@@ -41,6 +45,12 @@ export async function resyncAllReminders() {
       tasks
         .filter((t) => t.dueTime && !t.done)
         .map((t) => scheduleTaskReminder(t.id, t.title, t.dueTime as string))
+    );
+
+    await Promise.all(
+      resources
+        .filter((r) => r.dueDate && !r.done)
+        .map((r) => scheduleResourceReminder(r.id, r.title, r.dueDate as string, r.subjectId))
     );
 
     const goalsCount = await db.savingsGoals.count();
@@ -185,4 +195,28 @@ export async function scheduleTaskReminder(taskId: string, title: string, dueTim
 
 export async function cancelTaskReminder(taskId: string) {
   await safeCancel([hashId('task', taskId)]);
+}
+
+// ---- Ressources d'études : rappel la veille à 9h pour un devoir/examen ----
+export async function scheduleResourceReminder(resourceId: string, title: string, dueDate: string, subjectId: string) {
+  const id = hashId('resource', resourceId);
+  await safeCancel([id]);
+  const due = new Date(dueDate);
+  const fireAt = new Date(due.getFullYear(), due.getMonth(), due.getDate() - 1, 9, 0, 0);
+  if (fireAt.getTime() <= Date.now()) return;
+  await safeSchedule({
+    notifications: [
+      {
+        id,
+        title: 'Veyrion — Échéance demain',
+        body: title,
+        schedule: { at: fireAt, allowWhileIdle: true },
+        extra: { route: `/etudes/${subjectId}` },
+      },
+    ],
+  });
+}
+
+export async function cancelResourceReminder(resourceId: string) {
+  await safeCancel([hashId('resource', resourceId)]);
 }

@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { Plus, ChevronLeft, ChevronRight, RotateCw, Trash2 } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Plus, ChevronLeft, ChevronRight, RotateCw, Trash2, Flame } from 'lucide-react';
 import { useFlashcards } from '@/hooks/useFlashcards';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/hooks/useConfirm';
+import { sortByDue, isDue, scheduleNextReview, type ReviewRating } from '@/utils/spacedRepetition';
 
 export function FlashcardsSection({ subjectId }: { subjectId: string }) {
-  const { cards, addCard, deleteCard } = useFlashcards(subjectId);
+  const { cards, addCard, updateCard, deleteCard } = useFlashcards(subjectId);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -14,11 +15,14 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
   const [answer, setAnswer] = useState('');
   const { confirm, dialog } = useConfirm();
 
-  const current = cards[index];
+  // Les fiches à réviser (en retard ou jamais vues) passent en premier.
+  const ordered = useMemo(() => sortByDue(cards), [cards]);
+  const current = ordered[index];
+  const dueCount = useMemo(() => cards.filter(isDue).length, [cards]);
 
   const goTo = (delta: number) => {
     setFlipped(false);
-    setIndex((i) => Math.max(0, Math.min(cards.length - 1, i + delta)));
+    setIndex((i) => Math.max(0, Math.min(ordered.length - 1, i + delta)));
   };
 
   const handleCreate = () => {
@@ -37,11 +41,27 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
     setFlipped(false);
   };
 
+  const handleRate = (rating: ReviewRating) => {
+    if (!current) return;
+    updateCard(current.id, scheduleNextReview(current, rating));
+    setFlipped(false);
+    // Passe à la fiche suivante due, sans dépasser la fin du paquet.
+    setIndex((i) => Math.min(i, Math.max(0, ordered.length - 2)));
+  };
+
   return (
     <div className="glass-card p-5">
       {dialog}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-muted">Fiches de révision ({cards.length})</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-medium text-muted">Fiches de révision ({cards.length})</h3>
+          {dueCount > 0 && (
+            <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-electric-500/10 border border-electric-500/30 text-electric-400">
+              <Flame className="w-3 h-3" />
+              {dueCount} à réviser
+            </span>
+          )}
+        </div>
         <Button variant="ghost" size="sm" onClick={() => setCreating(true)}>
           <Plus className="w-3.5 h-3.5" />
           Nouvelle fiche
@@ -60,35 +80,60 @@ export function FlashcardsSection({ subjectId }: { subjectId: string }) {
               {flipped ? 'Réponse' : 'Question'}
             </span>
             <p className="text-white text-base">{flipped ? current?.answer : current?.question}</p>
-            <span className="flex items-center gap-1 text-xs text-muted mt-4">
-              <RotateCw className="w-3 h-3" /> Cliquer pour retourner
-            </span>
+            {!flipped && (
+              <span className="flex items-center gap-1 text-xs text-muted mt-4">
+                <RotateCw className="w-3 h-3" /> Cliquer pour retourner
+              </span>
+            )}
           </button>
 
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => goTo(-1)}
-              disabled={index === 0}
-              className="p-2 rounded-lg text-muted hover:text-white disabled:opacity-30 transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <span className="text-xs text-muted">
-              {index + 1} / {cards.length}
-            </span>
-            <div className="flex items-center gap-1">
-              <button onClick={handleDelete} className="p-2 rounded-lg text-muted hover:text-danger transition-colors" aria-label="Supprimer la fiche">
-                <Trash2 className="w-4 h-4" />
+          {flipped ? (
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                onClick={() => handleRate('difficile')}
+                className="text-xs py-2 rounded-lg border border-danger/40 text-danger hover:bg-danger/10 transition-colors"
+              >
+                Difficile
               </button>
               <button
-                onClick={() => goTo(1)}
-                disabled={index === cards.length - 1}
-                className="p-2 rounded-lg text-muted hover:text-white disabled:opacity-30 transition-colors"
+                onClick={() => handleRate('correct')}
+                className="text-xs py-2 rounded-lg border border-base-600 text-white hover:bg-white/5 transition-colors"
               >
-                <ChevronRight className="w-4 h-4" />
+                Correct
+              </button>
+              <button
+                onClick={() => handleRate('facile')}
+                className="text-xs py-2 rounded-lg border border-success/40 text-success hover:bg-success/10 transition-colors"
+              >
+                Facile
               </button>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => goTo(-1)}
+                disabled={index === 0}
+                className="p-2 rounded-lg text-muted hover:text-white disabled:opacity-30 transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-xs text-muted">
+                {index + 1} / {ordered.length}
+              </span>
+              <div className="flex items-center gap-1">
+                <button onClick={handleDelete} className="p-2 rounded-lg text-muted hover:text-danger transition-colors" aria-label="Supprimer la fiche">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => goTo(1)}
+                  disabled={index === ordered.length - 1}
+                  className="p-2 rounded-lg text-muted hover:text-white disabled:opacity-30 transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

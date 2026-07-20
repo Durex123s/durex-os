@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Check, Trash2, FileText, Video, BookOpen, ClipboardList, GraduationCap, NotebookPen } from 'lucide-react';
+import { Plus, Check, Trash2, FileText, Video, BookOpen, ClipboardList, GraduationCap, NotebookPen, Bell } from 'lucide-react';
 import type { ResourceType, StudyResource } from '@/types';
 import { RESOURCE_TYPE_LABELS } from '@/types';
 import { useResources } from '@/hooks/useSubjects';
@@ -19,10 +19,15 @@ const TYPE_ICONS: Record<ResourceType, typeof FileText> = {
 // note/cours/pdf/video sont plutôt de la lecture, sans notion de complétion.
 const TRACKABLE: ResourceType[] = ['exercice', 'devoir', 'examen'];
 
+function formatDueDate(iso: string) {
+  return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+}
+
 export function ResourceSection({ subjectId, type }: { subjectId: string; type: ResourceType }) {
   const { byType, addResource, toggleDone, deleteResource } = useResources(subjectId);
   const [adding, setAdding] = useState(false);
   const [title, setTitle] = useState('');
+  const [dueDate, setDueDate] = useState('');
   const items = byType(type);
   const Icon = TYPE_ICONS[type];
   const trackable = TRACKABLE.includes(type);
@@ -41,10 +46,12 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
       type,
       title: title.trim(),
       done: false,
+      dueDate: trackable && dueDate ? new Date(dueDate).toISOString() : undefined,
       createdAt: new Date().toISOString(),
     };
     addResource(resource);
     setTitle('');
+    setDueDate('');
     setAdding(false);
   };
 
@@ -79,6 +86,12 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
               </button>
             )}
             <span className={`flex-1 truncate ${item.done ? 'line-through text-muted' : 'text-white'}`}>{item.title}</span>
+            {item.dueDate && !item.done && (
+              <span className="flex items-center gap-1 text-[11px] text-muted shrink-0">
+                <Bell className="w-3 h-3" />
+                {formatDueDate(item.dueDate)}
+              </span>
+            )}
             <button
               onClick={() => handleDelete(item.id)}
               className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
@@ -91,18 +104,26 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
       </ul>
 
       {adding && (
-        <div className="flex gap-2 mt-3">
+        <div className="flex flex-col sm:flex-row gap-2 mt-3">
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+            onKeyDown={(e) => e.key === 'Enter' && !trackable && handleAdd()}
             placeholder="Titre..."
             autoFocus
             className="flex-1 bg-base-800 border border-base-600 rounded-lg px-3 py-1.5 text-sm text-white focus:border-electric-500 outline-none transition-colors"
           />
+          {trackable && (
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="bg-base-800 border border-base-600 rounded-lg px-3 py-1.5 text-sm text-white focus:border-electric-500 outline-none transition-colors"
+            />
+          )}
           <button
             onClick={handleAdd}
-            className="text-xs px-3 py-1.5 rounded-lg bg-electric-500 hover:bg-electric-600 text-onAccent font-medium transition-colors"
+            className="text-xs px-3 py-1.5 rounded-lg bg-electric-500 hover:bg-electric-600 text-onAccent font-medium transition-colors shrink-0"
           >
             Ajouter
           </button>

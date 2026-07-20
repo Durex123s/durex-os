@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/database/db';
 import type { Subject, StudyResource, ResourceType } from '@/types';
+import { scheduleResourceReminder, cancelResourceReminder } from '@/services/notifications';
 
 export function useSubjects() {
   const subjects = useLiveQuery(
@@ -31,13 +32,24 @@ export function useResources(subjectId: string) {
 
   async function addResource(resource: StudyResource) {
     await db.resources.add(resource);
+    if (resource.dueDate && !resource.done) {
+      await scheduleResourceReminder(resource.id, resource.title, resource.dueDate, resource.subjectId);
+    }
   }
   async function toggleDone(id: string) {
     const r = await db.resources.get(id);
-    if (r) await db.resources.put({ ...r, done: !r.done });
+    if (!r) return;
+    const updated = { ...r, done: !r.done };
+    await db.resources.put(updated);
+    if (updated.done) {
+      await cancelResourceReminder(id);
+    } else if (updated.dueDate) {
+      await scheduleResourceReminder(id, updated.title, updated.dueDate, updated.subjectId);
+    }
   }
   async function deleteResource(id: string) {
     await db.resources.delete(id);
+    await cancelResourceReminder(id);
   }
 
   const byType = (type: ResourceType) => (resources ?? []).filter((r) => r.type === type);
