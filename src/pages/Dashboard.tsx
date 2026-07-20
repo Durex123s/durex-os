@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import { HeroClock } from '@/components/dashboard/HeroClock';
+import { DashboardStatsRow } from '@/components/dashboard/DashboardStatsRow';
 import { DayProgress } from '@/components/dashboard/DayProgress';
 import { TasksToday } from '@/components/dashboard/TasksToday';
 import { GoalsWidget } from '@/components/dashboard/GoalsWidget';
@@ -37,6 +38,7 @@ export function Dashboard() {
       </div>
 
       <HeroClock />
+      <DashboardStatsRow />
       <SmartNotificationsWidget />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
