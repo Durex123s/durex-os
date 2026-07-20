@@ -20,15 +20,26 @@ const WIDGET_COMPONENTS: Record<string, ComponentType> = {
   discipline: DisciplineWidget,
 };
 
+// Les widgets sont répartis en deux rangées à densité fixe (comme la
+// maquette de référence) : une rangée large à 2 colonnes, puis une rangée
+// plus dense à 3 colonnes. L'ordre/visibilité restent personnalisables
+// dans Paramètres, mais chaque widget reste dans son groupe.
+const ROW_A_IDS = ['progression', 'taches', 'objectifs'];
+const ROW_B_IDS = ['cours', 'finances', 'discipline'];
+
 // Dashboard = agrégation de widgets indépendants. La personnalisation
 // (ordre / visibilité), réglable dans Paramètres, est appliquée ici :
 // seuls les widgets visibles sont rendus, dans l'ordre choisi.
 export function Dashboard() {
   const { dashboardWidgets } = useAppStore();
 
-  const visibleWidgets = [...dashboardWidgets]
-    .filter((w) => w.visible && WIDGET_COMPONENTS[w.id])
-    .sort((a, b) => a.order - b.order);
+  const visible = (ids: string[]) =>
+    [...dashboardWidgets]
+      .filter((w) => w.visible && ids.includes(w.id) && WIDGET_COMPONENTS[w.id])
+      .sort((a, b) => a.order - b.order);
+
+  const rowA = visible(ROW_A_IDS);
+  const rowB = visible(ROW_B_IDS);
 
   return (
     <div className="space-y-6">
@@ -41,12 +52,23 @@ export function Dashboard() {
       <DashboardStatsRow />
       <SmartNotificationsWidget />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {visibleWidgets.map((w) => {
-          const Widget = WIDGET_COMPONENTS[w.id];
-          return <Widget key={w.id} />;
-        })}
-      </div>
+      {rowA.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 sm:gap-5">
+          {rowA.map((w) => {
+            const Widget = WIDGET_COMPONENTS[w.id];
+            return <Widget key={w.id} />;
+          })}
+        </div>
+      )}
+
+      {rowB.length > 0 && (
+        <div className="grid grid-cols-3 gap-3 sm:gap-5">
+          {rowB.map((w) => {
+            const Widget = WIDGET_COMPONENTS[w.id];
+            return <Widget key={w.id} />;
+          })}
+        </div>
+      )}
     </div>
   );
 }

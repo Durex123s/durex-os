@@ -54,15 +54,15 @@ export function DashboardStatsRow() {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-2 sm:gap-4">
       {stats.map((s) => (
-        <div key={s.label} className="glass-card p-4">
-          <div className="flex items-center gap-1.5 text-xs text-muted mb-2">
-            <s.icon className="w-3.5 h-3.5" />
-            {s.label}
+        <div key={s.label} className="glass-card p-2.5 sm:p-4">
+          <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted mb-1.5 sm:mb-2">
+            <s.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+            <span className="truncate">{s.label}</span>
           </div>
-          <p className="font-display text-2xl font-semibold text-white">{s.value}</p>
-          <p className="text-xs text-electric-400 mt-0.5">{s.hint}</p>
+          <p className="font-display text-base sm:text-2xl font-semibold text-white leading-tight">{s.value}</p>
+          <p className="text-[10px] sm:text-xs text-electric-400 mt-0.5 truncate">{s.hint}</p>
         </div>
       ))}
     </div>
