@@ -49,6 +49,8 @@ export function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useAppStore();
   const { get } = useAppSettings();
   const photo = get('profilePhoto');
+  const showElectricianTools = get('showElectricianTools') === 'true';
+  const items = NAV_ITEMS.filter((i) => i.id !== 'outils' || showElectricianTools);
   const location = useLocation();
 
   return (
@@ -70,7 +72,7 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-        {NAV_ITEMS.map((item) => {
+        {items.map((item) => {
           const isActive = item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path);
           return (
             <NavLink

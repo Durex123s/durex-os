@@ -1,5 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { Zap } from 'lucide-react';
+import { useAppSettings } from '@/hooks/useAppSettings';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { OhmCalculator } from '@/components/outils/OhmCalculator';
 import { PowerCalculator } from '@/components/outils/PowerCalculator';
 import { VoltageDropCalculator } from '@/components/outils/VoltageDropCalculator';
@@ -14,6 +18,26 @@ type Tab = 'calculatrices' | 'symboles';
 
 export function Outils() {
   const [tab, setTab] = useState<Tab>('calculatrices');
+  const { get, loaded } = useAppSettings();
+  const enabled = get('showElectricianTools') === 'true';
+
+  if (loaded && !enabled) {
+    return (
+      <EmptyState
+        icon={Zap}
+        title="Outils électricien désactivés"
+        description="Ce module de calculatrices professionnelles est masqué par défaut. Active-le dans Paramètres si tu en as besoin."
+        action={
+          <Link
+            to="/parametres"
+            className="flex items-center gap-1.5 bg-electric-500 hover:bg-electric-600 text-onAccent font-medium text-sm px-3 py-1.5 rounded-lg transition-colors"
+          >
+            Aller dans Paramètres
+          </Link>
+        }
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">

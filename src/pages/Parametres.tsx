@@ -8,6 +8,7 @@ import { SavingsPercentSection } from '@/components/parametres/SavingsPercentSec
 import { AvatarCustomSection } from '@/components/parametres/AvatarCustomSection';
 import { BackupSection } from '@/components/parametres/BackupSection';
 import { PersonalizationSection } from '@/components/parametres/PersonalizationSection';
+import { ElectricianToolsSection } from '@/components/parametres/ElectricianToolsSection';
 import { SecuritySection } from '@/components/parametres/SecuritySection';
 import { SyncSection } from '@/components/parametres/SyncSection';
 
@@ -39,6 +40,7 @@ export function Parametres() {
         <AvatarCustomSection />
         <BackupSection />
         <PersonalizationSection />
+        <ElectricianToolsSection />
         <SecuritySection />
         <SyncSection />
       </div>

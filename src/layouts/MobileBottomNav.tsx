@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { NAV_ITEMS } from '@/utils/navigation';
+import { useAppSettings } from '@/hooks/useAppSettings';
 
 function NavIcon({ name, className }: { name: string; className?: string }) {
   const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[name];
@@ -17,8 +18,11 @@ const PRIMARY_IDS = ['dashboard', 'planning', 'etudes', 'finances'];
 export function MobileBottomNav() {
   const [moreOpen, setMoreOpen] = useState(false);
   const location = useLocation();
-  const primary = NAV_ITEMS.filter((i) => PRIMARY_IDS.includes(i.id));
-  const rest = NAV_ITEMS.filter((i) => !PRIMARY_IDS.includes(i.id));
+  const { get } = useAppSettings();
+  const showElectricianTools = get('showElectricianTools') === 'true';
+  const items = NAV_ITEMS.filter((i) => i.id !== 'outils' || showElectricianTools);
+  const primary = items.filter((i) => PRIMARY_IDS.includes(i.id));
+  const rest = items.filter((i) => !PRIMARY_IDS.includes(i.id));
 
   return (
     <>
