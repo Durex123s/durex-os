@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
-import { AppAvatar } from '@/components/avatar/AppAvatar';
+import { HeaderAvatar } from '@/components/avatar/HeaderAvatar';
 import { GlobalSearch } from '@/components/search/GlobalSearch';
 import { getAvatarContext } from '@/components/avatar/avatarContextConfig';
 
@@ -22,7 +22,7 @@ export function MainLayout() {
       <main className="flex-1 px-4 sm:px-6 md:px-10 py-6 md:py-8 pb-24 md:pb-8 max-w-[1400px] mx-auto w-full">
         <div className="flex items-center justify-end gap-2 mb-2">
           <GlobalSearch />
-          <AppAvatar context={avatarContext} />
+          <HeaderAvatar context={avatarContext} />
         </div>
         <motion.div
           key={location.pathname}
