@@ -20,7 +20,7 @@ export function DayProgress() {
 
   return (
     <WidgetCard title="Progression de la journée" icon={<CircleGauge className="w-4 h-4" />}>
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
         <svg width="100" height="100" viewBox="0 0 100 100" className="shrink-0">
           <circle cx="50" cy="50" r={radius} fill="none" strokeWidth="8" style={{ stroke: 'rgb(var(--color-bg-700))' }} />
           <circle
@@ -39,7 +39,7 @@ export function DayProgress() {
             {animatedPercent}%
           </text>
         </svg>
-        <div className="text-sm text-muted">
+        <div className="text-sm text-muted text-center sm:text-left min-w-0">
           <p>Journée active : {startHour}h–{endHour}h</p>
           <p className="mt-1 text-white">
             {percent < 100 ? `Il te reste ${Math.round((totalMinutes - elapsed) / 60)}h` : 'Journée terminée'}

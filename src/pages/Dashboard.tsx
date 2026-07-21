@@ -9,6 +9,15 @@ import { FinanceWidget } from '@/components/dashboard/FinanceWidget';
 import { DisciplineWidget } from '@/components/dashboard/DisciplineWidget';
 import { SmartNotificationsWidget } from '@/components/dashboard/SmartNotificationsWidget';
 import { useAppStore } from '@/store/useAppStore';
+import { useAppSettings } from '@/hooks/useAppSettings';
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 5) return 'Bonne nuit';
+  if (h < 12) return 'Bonjour';
+  if (h < 18) return 'Bon après-midi';
+  return 'Bonsoir';
+}
 
 // Association id de widget (utilisé dans Paramètres > Personnalisation) -> composant.
 const WIDGET_COMPONENTS: Record<string, ComponentType> = {
@@ -32,6 +41,8 @@ const ROW_B_IDS = ['cours', 'finances', 'discipline'];
 // seuls les widgets visibles sont rendus, dans l'ordre choisi.
 export function Dashboard() {
   const { dashboardWidgets } = useAppStore();
+  const { get } = useAppSettings();
+  const name = get('profileName');
 
   const visible = (ids: string[]) =>
     [...dashboardWidgets]
@@ -44,7 +55,9 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">Bonjour 👋</h1>
+        <h1 className="font-display text-2xl font-semibold text-white">
+          {getGreeting()}{name ? `, ${name}` : ''} 👋
+        </h1>
         <p className="text-muted text-sm mt-1">Voici un aperçu de ta journée.</p>
       </div>
 
@@ -53,7 +66,7 @@ export function Dashboard() {
       <SmartNotificationsWidget />
 
       {rowA.length > 0 && (
-        <div className="grid grid-cols-2 gap-3 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
           {rowA.map((w) => {
             const Widget = WIDGET_COMPONENTS[w.id];
             return <Widget key={w.id} />;
@@ -62,7 +75,7 @@ export function Dashboard() {
       )}
 
       {rowB.length > 0 && (
-        <div className="grid grid-cols-3 gap-3 sm:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-5">
           {rowB.map((w) => {
             const Widget = WIDGET_COMPONENTS[w.id];
             return <Widget key={w.id} />;

@@ -21,7 +21,7 @@ export function GoalsWidget() {
       <div className="space-y-4">
         {shown.map((goal) => (
           <div key={goal.id}>
-            <div className="flex justify-between text-sm mb-1.5">
+            <div className="flex flex-wrap justify-between gap-x-2 text-sm mb-1.5">
               <span className="text-white">{goal.title}</span>
               <span className="text-muted">
                 {goal.current.toLocaleString('fr-FR')} / {goal.target.toLocaleString('fr-FR')} {goal.unit}
