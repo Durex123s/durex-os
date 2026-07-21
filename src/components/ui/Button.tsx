@@ -11,7 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANT_CLASSES: Record<Variant, string> = {
   primary:
-    'bg-electric-500 hover:bg-electric-600 text-onAccent font-medium disabled:opacity-40 disabled:cursor-not-allowed',
+    'bg-electric-500 hover:bg-electric-600 text-onAccent font-medium disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_4px_12px_-2px_rgb(var(--color-accent)/0.4)]',
   ghost:
     'text-electric-400 hover:underline bg-transparent',
   outline:
