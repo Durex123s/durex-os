@@ -4,30 +4,32 @@
 
 @layer base {
   :root {
-    --color-bg-950: 11 10 8;
-    --color-bg-900: 19 18 16;
-    --color-bg-800: 28 26 23;
-    --color-bg-700: 38 35 31;
-    --color-bg-600: 55 51 44;
-    --color-text: 247 244 238;
-    --color-muted: 158 150 136;
-    --color-on-accent: 11 10 8;
-    --color-accent: 201 162 39;
+    --color-bg-950: 4 6 15;
+    --color-bg-900: 9 12 26;
+    --color-bg-800: 14 18 36;
+    --color-bg-700: 21 27 50;
+    --color-bg-600: 32 40 68;
+    --color-text: 232 240 255;
+    --color-muted: 132 148 189;
+    --color-on-accent: 4 6 15;
+    --color-accent: 34 211 238;
+    --color-accent-2: 168 85 247;
     --font-scale: 1;
-    --font-display: 'Fraunces', serif;
+    --font-display: 'Orbitron', sans-serif;
     --font-body: 'Inter', sans-serif;
   }
 
   .light {
-    --color-bg-950: 250 248 244;
-    --color-bg-900: 255 255 253;
-    --color-bg-800: 242 239 232;
-    --color-bg-700: 227 222 210;
-    --color-bg-600: 208 201 185;
-    --color-text: 26 23 18;
-    --color-muted: 109 102 89;
-    --color-on-accent: 11 10 8;
-    --color-accent: 201 162 39;
+    --color-bg-950: 240 244 252;
+    --color-bg-900: 250 252 255;
+    --color-bg-800: 227 234 247;
+    --color-bg-700: 206 216 238;
+    --color-bg-600: 178 191 222;
+    --color-text: 12 16 32;
+    --color-muted: 82 94 128;
+    --color-on-accent: 4 6 15;
+    --color-accent: 34 211 238;
+    --color-accent-2: 168 85 247;
   }
 
   * {
@@ -43,9 +45,9 @@
   body {
     font-family: var(--font-body);
     background:
-      radial-gradient(circle at 15% 0%, rgba(201, 162, 39, 0.1), transparent 45%),
-      radial-gradient(circle at 100% 30%, rgba(184, 188, 194, 0.06), transparent 40%),
-      radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.35), transparent 60%),
+      radial-gradient(circle at 15% 0%, rgba(34, 211, 238, 0.12), transparent 45%),
+      radial-gradient(circle at 100% 30%, rgba(168, 85, 247, 0.1), transparent 40%),
+      radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.4), transparent 60%),
       rgb(var(--color-bg-950));
     min-height: 100vh;
   }
@@ -65,14 +67,14 @@
 
 @layer components {
   .glass-card {
-    @apply relative border border-white/[0.06] rounded-xl2 overflow-hidden;
-    background: linear-gradient(165deg, rgb(var(--color-bg-800) / 0.65) 0%, rgb(var(--color-bg-900) / 0.7) 55%, rgb(var(--color-bg-950) / 0.75) 100%);
+    @apply relative border border-white/[0.07] rounded-xl2 overflow-hidden;
+    background: linear-gradient(165deg, rgb(var(--color-bg-800) / 0.7) 0%, rgb(var(--color-bg-900) / 0.72) 55%, rgb(var(--color-bg-950) / 0.78) 100%);
     backdrop-filter: blur(8px);
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.4),
-      0 8px 16px -4px rgba(0, 0, 0, 0.4),
-      0 24px 40px -12px rgba(0, 0, 0, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      0 1px 2px rgba(0, 0, 0, 0.45),
+      0 8px 16px -4px rgba(0, 0, 0, 0.45),
+      0 24px 40px -12px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
   .glass-card::before {
     content: '';
@@ -81,14 +83,14 @@
     left: 1.25rem;
     right: 1.25rem;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.6), transparent);
+    background: linear-gradient(90deg, transparent, rgb(var(--color-accent) / 0.7), rgb(var(--color-accent-2) / 0.6), transparent);
   }
   .glass-card:hover {
     @apply border-electric-500/30;
   }
   .font-display {
-    letter-spacing: -0.015em;
-    line-height: 1.12;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
   }
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted transition-colors duration-150;

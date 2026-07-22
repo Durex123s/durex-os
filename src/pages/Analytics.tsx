@@ -82,12 +82,12 @@ export function Analytics() {
             <ResponsiveContainer>
               <BarChart data={data.combinedPerDay}>
                 <CartesianGrid stroke="#1D1D29" vertical={false} />
-                <XAxis dataKey="label" tick={{ fill: '#9E9688', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="label" tick={{ fill: '#94A3B8', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Tooltip {...chartTooltipStyle} formatter={(v: number) => `${v.toLocaleString('fr-FR')} FCFA`} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="depense" name="Dépense" fill="#C9A227" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="revenu" name="Revenu" fill="#3FAE68" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="depense" name="Dépense" fill="#22D3EE" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenu" name="Revenu" fill="#34D399" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -99,10 +99,10 @@ export function Analytics() {
             <ResponsiveContainer>
               <LineChart data={data.studyPerDay}>
                 <CartesianGrid stroke="#1D1D29" vertical={false} />
-                <XAxis dataKey="label" tick={{ fill: '#9E9688', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="label" tick={{ fill: '#94A3B8', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Tooltip {...chartTooltipStyle} formatter={(v: number) => [`${v} min`, 'Étude']} />
-                <Line type="monotone" dataKey="value" stroke="#3FAE68" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="value" stroke="#34D399" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -114,10 +114,10 @@ export function Analytics() {
             <ResponsiveContainer>
               <BarChart data={data.habitRatePerDay}>
                 <CartesianGrid stroke="#1D1D29" vertical={false} />
-                <XAxis dataKey="label" tick={{ fill: '#9E9688', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="label" tick={{ fill: '#94A3B8', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide domain={[0, 100]} />
                 <Tooltip {...chartTooltipStyle} formatter={(v: number) => [`${v}%`, 'Complété']} />
-                <Bar dataKey="value" fill="#D99A3D" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" fill="#FBBF24" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

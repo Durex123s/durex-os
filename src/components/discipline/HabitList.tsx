@@ -5,7 +5,7 @@ import { useHabits } from '@/hooks/useHabits';
 import { computeBestStreak } from '@/utils/discipline';
 import { useConfirm } from '@/hooks/useConfirm';
 
-const COLOR_CHOICES = ['#C9A227', '#3FAE68', '#D99A3D', '#C0435B', '#4E8C82'];
+const COLOR_CHOICES = ['#22D3EE', '#34D399', '#FBBF24', '#F43F5E', '#A855F7'];
 
 export function HabitList() {
   const { habits, addHabit, deleteHabit, toggleToday, setReminder } = useHabits();

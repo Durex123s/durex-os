@@ -9,6 +9,7 @@ export const FONT_SIZE_PRESETS: { name: string; scale: string }[] = [
 ];
 
 export const FONT_STYLE_PRESETS: { name: string; display: string; body: string }[] = [
+  { name: 'Futuriste', display: `'Orbitron', sans-serif`, body: `'Inter', sans-serif` },
   { name: 'Classique', display: `'Fraunces', serif`, body: `'Inter', sans-serif` },
   { name: 'Épuré', display: `'Inter', sans-serif`, body: `'Inter', sans-serif` },
   { name: 'Mono', display: `'JetBrains Mono', monospace`, body: `'JetBrains Mono', monospace` },

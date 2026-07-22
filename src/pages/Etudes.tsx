@@ -6,7 +6,7 @@ import { EtudesOverview } from '@/components/etudes/EtudesOverview';
 import { EmptyState } from '@/components/ui/EmptyState';
 
 const ICON_CHOICES = ['BookOpen', 'Cpu', 'Sigma', 'Languages', 'FlaskConical', 'Landmark', 'Palette', 'Dumbbell'];
-const COLOR_CHOICES = ['#C9A227', '#3FAE68', '#D99A3D', '#C0435B', '#4E8C82'];
+const COLOR_CHOICES = ['#22D3EE', '#34D399', '#FBBF24', '#F43F5E', '#A855F7'];
 
 export function Etudes() {
   const { subjects, addSubject } = useSubjects();
@@ -101,7 +101,7 @@ export function Etudes() {
                   style={
                     icon === i
                       ? { backgroundColor: `${color}33`, borderColor: color, color: '#fff' }
-                      : { borderColor: '#2A2A38', color: '#9E9688' }
+                      : { borderColor: '#2A2A38', color: '#94A3B8' }
                   }
                 >
                   {i}

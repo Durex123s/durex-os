@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { useAppSettings } from './useAppSettings';
 
 export const ACCENT_PRESETS: { name: string; rgb: string; hex: string }[] = [
+  { name: 'Cyan néon', rgb: '34 211 238', hex: '#22D3EE' },
+  { name: 'Violet néon', rgb: '168 85 247', hex: '#A855F7' },
+  { name: 'Magenta', rgb: '236 72 220', hex: '#EC48DC' },
+  { name: 'Bleu électrique', rgb: '61 139 255', hex: '#3D8BFF' },
+  { name: 'Vert', rgb: '46 212 122', hex: '#2ED47A' },
   { name: 'Laiton', rgb: '201 162 39', hex: '#C9A227' },
   { name: 'Platine', rgb: '184 188 194', hex: '#B8BCC2' },
-  { name: 'Bleu électrique', rgb: '61 139 255', hex: '#3D8BFF' },
-  { name: 'Violet', rgb: '139 92 246', hex: '#8B5CF6' },
-  { name: 'Vert', rgb: '46 212 122', hex: '#2ED47A' },
   { name: 'Rose', rgb: '255 84 112', hex: '#FF5470' },
   { name: 'Orange', rgb: '245 158 66', hex: '#F59E42' },
-  { name: 'Cyan', rgb: '34 211 238', hex: '#22D3EE' },
 ];
 
 const SETTING_KEY = 'accentColor';

@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-const PALETTE = ['#C9A227', '#3FAE68', '#D99A3D', '#C0435B', '#4E8C82', '#DDBC55', '#9E9688'];
+const PALETTE = ['#22D3EE', '#34D399', '#FBBF24', '#F43F5E', '#A855F7', '#67E8F9', '#94A3B8'];
 
 interface CategoryChartProps {
   data: { category: string; amount: number }[];
@@ -23,7 +23,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
                 type="category"
                 dataKey="category"
                 width={90}
-                tick={{ fill: '#9E9688', fontSize: 12 }}
+                tick={{ fill: '#94A3B8', fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
               />

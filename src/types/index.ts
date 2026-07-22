@@ -42,11 +42,11 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
 };
 
 export const CATEGORY_COLORS: Record<EventCategory, string> = {
-  cours: '#C9A227',
-  rdv: '#D99A3D',
-  examen: '#C0435B',
-  travail: '#3FAE68',
-  evenement: '#4E8C82',
+  cours: '#22D3EE',
+  rdv: '#FBBF24',
+  examen: '#F43F5E',
+  travail: '#34D399',
+  evenement: '#A855F7',
 };
 
 export const REMINDER_LABELS: Record<ReminderOffset, string> = {

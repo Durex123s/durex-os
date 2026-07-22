@@ -20,11 +20,11 @@ export interface ContextConfig {
 }
 
 export const CONTEXT_CONFIG: Record<AvatarContext, ContextConfig> = {
-  dashboard: { color: '#C9A227', accessory: Tablet, pose: 'wave', outfit: 'casual' },
+  dashboard: { color: '#22D3EE', accessory: Tablet, pose: 'wave', outfit: 'casual' },
   finances: { color: '#1e293b', accessory: Wallet, pose: 'hold', outfit: 'suit' },
   etudes: { color: '#F59E42', accessory: Backpack, pose: 'hold', outfit: 'backpack' },
   planning: { color: '#8B5CF6', accessory: NotebookPen, pose: 'point', outfit: 'notepad' },
-  discipline: { color: '#C0435B', accessory: Dumbbell, pose: 'flex', outfit: 'casual' },
+  discipline: { color: '#F43F5E', accessory: Dumbbell, pose: 'flex', outfit: 'casual' },
   outils: { color: '#EAB308', accessory: Wrench, pose: 'hold', outfit: 'technician' },
   assistant: { color: '#22D3EE', accessory: Sparkles, pose: 'think', outfit: 'hologram' },
   objectifs: { color: '#FFD166', accessory: Trophy, pose: 'flex', outfit: 'casual' },

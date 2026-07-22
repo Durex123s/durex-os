@@ -67,7 +67,7 @@ export function PomodoroTimer() {
             cy="80"
             r={radius}
             fill="none"
-            stroke="#C9A227"
+            stroke="#22D3EE"
             strokeWidth="10"
             strokeLinecap="round"
             strokeDasharray={circumference}

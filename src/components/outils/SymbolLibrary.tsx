@@ -29,7 +29,7 @@ const CATEGORY_LABELS: Record<ElectricalSymbol['category'], string> = {
 // Représentations simplifiées (pas la norme graphique exacte, mais assez
 // distinctives pour reconnaître chaque symbole d'un coup d'œil).
 function SymbolGlyph({ id }: { id: string }) {
-  const stroke = '#C9A227';
+  const stroke = '#22D3EE';
   const common = { stroke, strokeWidth: 1.6, fill: 'none' };
   switch (id) {
     case 'disjoncteur':
