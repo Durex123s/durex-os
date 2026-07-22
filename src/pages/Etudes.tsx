@@ -57,8 +57,10 @@ export function Etudes() {
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {subjects.map((s) => (
-            <SubjectCard key={s.id} subject={s} />
+          {subjects.map((s, i) => (
+            <div key={s.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-fadeUp">
+              <SubjectCard subject={s} />
+            </div>
           ))}
         </div>
       )}

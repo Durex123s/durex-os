@@ -35,7 +35,7 @@ export function GoalCard({ goal, onLog, onDelete }: GoalCardProps) {
             {goal.mode === 'quotidien' ? " aujourd'hui" : ''}
           </p>
         </div>
-        <button onClick={handleDelete} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity">
+        <button onClick={handleDelete} className="opacity-40 group-hover:opacity-100 text-muted hover:text-danger transition-opacity">
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>

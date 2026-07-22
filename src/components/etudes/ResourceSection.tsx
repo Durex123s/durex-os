@@ -94,7 +94,7 @@ export function ResourceSection({ subjectId, type }: { subjectId: string; type: 
             )}
             <button
               onClick={() => handleDelete(item.id)}
-              className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
+              className="opacity-40 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
               aria-label="Supprimer"
             >
               <Trash2 className="w-3.5 h-3.5" />

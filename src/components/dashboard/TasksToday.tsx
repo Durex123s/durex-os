@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { WidgetCard } from './WidgetCard';
 import { ListChecks, Plus, Trash2 } from 'lucide-react';
 import type { Task } from '@/types';
@@ -46,30 +47,40 @@ export function TasksToday() {
         <p className="text-xs text-muted py-2">Aucune tâche pour l'instant — touche "+" pour en ajouter une.</p>
       ) : (
         <ul className="space-y-2">
-          {tasks.map((task) => (
-            <li key={task.id} className="flex items-center gap-3 group">
-              <button
-                onClick={() => toggleDone(task.id)}
-                className={clsx(
-                  'w-4 h-4 rounded-md border shrink-0 transition-colors',
-                  task.done ? 'bg-electric-500 border-electric-500' : 'border-base-600 hover:border-electric-400'
-                )}
-                aria-label={task.done ? 'Marquer comme non terminée' : 'Marquer comme terminée'}
-              />
-              <span className={clsx('flex-1 text-sm truncate', task.done ? 'line-through text-muted' : 'text-white')}>
-                {task.title}
-              </span>
-              <span className={clsx('w-1.5 h-1.5 rounded-full shrink-0', priorityColor[task.priority])} />
-              {task.dueTime && <span className="text-xs text-muted tabular-nums shrink-0">{task.dueTime}</span>}
-              <button
-                onClick={() => handleDelete(task.id, task.title)}
-                className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity shrink-0"
-                aria-label="Supprimer la tâche"
+          <AnimatePresence initial={false}>
+            {tasks.map((task) => (
+              <motion.li
+                key={task.id}
+                layout
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: 24, height: 0, marginBottom: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-3 group"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </li>
-          ))}
+                <button
+                  onClick={() => toggleDone(task.id)}
+                  className={clsx(
+                    'w-4 h-4 rounded-md border shrink-0 transition-colors',
+                    task.done ? 'bg-electric-500 border-electric-500' : 'border-base-600 hover:border-electric-400'
+                  )}
+                  aria-label={task.done ? 'Marquer comme non terminée' : 'Marquer comme terminée'}
+                />
+                <span className={clsx('flex-1 text-sm truncate', task.done ? 'line-through text-muted' : 'text-white')}>
+                  {task.title}
+                </span>
+                <span className={clsx('w-1.5 h-1.5 rounded-full shrink-0', priorityColor[task.priority])} />
+                {task.dueTime && <span className="text-xs text-muted tabular-nums shrink-0">{task.dueTime}</span>}
+                <button
+                  onClick={() => handleDelete(task.id, task.title)}
+                  className="opacity-40 group-hover:opacity-100 text-muted hover:text-danger transition-opacity shrink-0"
+                  aria-label="Supprimer la tâche"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
       )}
 

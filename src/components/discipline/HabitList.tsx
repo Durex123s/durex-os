@@ -89,14 +89,14 @@ export function HabitList() {
                 )}
               <button
                 onClick={() => startEditReminder(h.id, h.reminderTime)}
-                className={`transition-colors ${h.reminderTime ? 'text-electric-400' : 'text-muted opacity-0 group-hover:opacity-100 hover:text-electric-400'}`}
+                className={`transition-colors ${h.reminderTime ? 'text-electric-400' : 'text-muted opacity-40 group-hover:opacity-100 hover:text-electric-400'}`}
                 aria-label="Régler un rappel"
               >
                 <Clock className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => handleDelete(h.id, h.name)}
-                className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
+                className="opacity-40 group-hover:opacity-100 text-muted hover:text-danger transition-opacity"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>

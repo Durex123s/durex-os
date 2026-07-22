@@ -241,7 +241,7 @@ export function QuizSection({ subjectId }: { subjectId: string }) {
                 <RotateCcw className="w-3 h-3" />
                 Faire le quiz
               </button>
-              <button onClick={() => handleDeleteQuiz(q.id)} className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-opacity p-1">
+              <button onClick={() => handleDeleteQuiz(q.id)} className="opacity-40 group-hover:opacity-100 text-muted hover:text-danger transition-opacity p-1">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>

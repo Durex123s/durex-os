@@ -42,8 +42,10 @@ export function Objectifs() {
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {goals.map((g) => (
-            <GoalCard key={g.id} goal={g} onLog={(amount) => logProgress(g.id, amount)} onDelete={() => deleteGoal(g.id)} />
+          {goals.map((g, i) => (
+            <div key={g.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-fadeUp">
+              <GoalCard goal={g} onLog={(amount) => logProgress(g.id, amount)} onDelete={() => deleteGoal(g.id)} />
+            </div>
           ))}
         </div>
       )}
