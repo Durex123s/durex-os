@@ -2,6 +2,8 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
 import { db } from '@/database/db';
 
+const CHANNEL_ID = 'veyrion_reminders_v2';
+
 const REPO = 'Durex123s/durex-os';
 const UPDATE_NOTIF_ID = 900000003;
 
@@ -32,6 +34,7 @@ export async function checkForUpdate() {
           body: 'Une nouvelle version de Veyrion est prête. Touche pour voir comment mettre à jour.',
           schedule: { at: new Date(Date.now() + 1000) },
           extra: { route: '/parametres' },
+          channelId: CHANNEL_ID,
         },
       ],
     });

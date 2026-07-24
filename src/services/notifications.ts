@@ -5,9 +5,36 @@ import { db } from '@/database/db';
 
 let permissionRequested = false;
 let tapListenerRegistered = false;
+let channelReady = false;
+
+// Nouvel identifiant de canal (Android) : un canal existant, une fois créé,
+// ne peut plus être modifié par le code (l'utilisateur devrait le faire à la
+// main dans les réglages système). Si un ancien canal avait été créé sans
+// son, il resterait silencieux pour toujours — on repart donc sur un
+// identifiant neuf, avec le son explicitement activé dès la création.
+const CHANNEL_ID = 'veyrion_reminders_v2';
+
+async function ensureChannel() {
+  if (!Capacitor.isNativePlatform() || channelReady) return;
+  channelReady = true;
+  try {
+    await LocalNotifications.createChannel({
+      id: CHANNEL_ID,
+      name: 'Rappels Veyrion',
+      description: 'Habitudes, tâches, échéances et mises à jour.',
+      importance: 5, // IMPORTANCE_HIGH : nécessaire pour que le son et la bannière apparaissent
+      visibility: 1,
+      sound: 'default',
+      vibration: true,
+    });
+  } catch (e) {
+    console.warn('[notifications] Création du canal impossible :', e);
+  }
+}
 
 export async function initNotifications() {
   registerTapListener();
+  await ensureChannel();
 
   if (!Capacitor.isNativePlatform()) return;
   if (permissionRequested) return;
@@ -116,6 +143,7 @@ export async function scheduleHabitReminder(habitId: string, habitName: string, 
           allowWhileIdle: true,
         },
         extra: { route: '/discipline' },
+        channelId: CHANNEL_ID,
       },
     ],
   });
@@ -139,6 +167,7 @@ export async function schedulePomodoroEnd(secondsLeft: number, label: string) {
         body: `Session "${label}" terminée.`,
         schedule: { at: fireAt, allowWhileIdle: true },
         extra: { route: '/discipline' },
+        channelId: CHANNEL_ID,
       },
     ],
   });
@@ -163,6 +192,7 @@ export async function scheduleWeeklySavingsReminder() {
           allowWhileIdle: true,
         },
         extra: { route: '/finances' },
+        channelId: CHANNEL_ID,
       },
     ],
   });
@@ -188,6 +218,7 @@ export async function scheduleTaskReminder(taskId: string, title: string, dueTim
         body: title,
         schedule: { at: fireAt, allowWhileIdle: true },
         extra: { route: '/planning' },
+        channelId: CHANNEL_ID,
       },
     ],
   });
@@ -212,6 +243,7 @@ export async function scheduleResourceReminder(resourceId: string, title: string
         body: title,
         schedule: { at: fireAt, allowWhileIdle: true },
         extra: { route: `/etudes/${subjectId}` },
+        channelId: CHANNEL_ID,
       },
     ],
   });
