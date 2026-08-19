@@ -20,3 +20,4 @@ keystore.properties
 # Sorties d'outils d'analyse / scripts ponctuels — utiles en local, pas dans le repo.
 stats.html
 design_dump.txt
+stats.html

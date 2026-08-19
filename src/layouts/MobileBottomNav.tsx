@@ -1,14 +1,44 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import * as Icons from 'lucide-react';
-import { X } from 'lucide-react';
+import {
+  LayoutDashboard,
+  CalendarDays,
+  GraduationCap,
+  Wallet,
+  Flame,
+  Zap,
+  Code2,
+  Sparkles,
+  Target,
+  BarChart3,
+  FolderOpen,
+  Settings,
+  X,
+  MoreHorizontal,
+  type LucideIcon,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { NAV_ITEMS } from '@/utils/navigation';
 import { useAppSettings } from '@/hooks/useAppSettings';
 
+const NAV_ICONS: Record<string, LucideIcon> = {
+  LayoutDashboard,
+  CalendarDays,
+  GraduationCap,
+  Wallet,
+  Flame,
+  Zap,
+  Code2,
+  Sparkles,
+  Target,
+  BarChart3,
+  FolderOpen,
+  Settings,
+};
+
 function NavIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[name];
+  const Icon = NAV_ICONS[name];
   if (!Icon) return null;
   return <Icon className={className} strokeWidth={1.75} />;
 }
@@ -56,7 +86,7 @@ export function MobileBottomNav() {
           onClick={() => setMoreOpen(true)}
           className="flex-1 flex flex-col items-center gap-1 py-2.5 text-[10px] text-muted"
         >
-          <Icons.MoreHorizontal className="w-5 h-5" strokeWidth={1.75} />
+          <MoreHorizontal className="w-5 h-5" strokeWidth={1.75} />
           <span>Plus</span>
         </button>
       </nav>

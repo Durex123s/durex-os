@@ -1,11 +1,33 @@
 import { Link } from 'react-router-dom';
-import * as Icons from 'lucide-react';
-import { Pin } from 'lucide-react';
+import {
+  BookOpen,
+  Cpu,
+  Sigma,
+  Languages,
+  FlaskConical,
+  Landmark,
+  Palette,
+  Dumbbell,
+  Pin,
+  type LucideIcon,
+} from 'lucide-react';
 import type { Subject } from '@/types';
 import { useSubjectProgress } from '@/hooks/useQuizzes';
 
+// Doit rester synchronisé avec ICON_CHOICES dans src/pages/Etudes.tsx
+const SUBJECT_ICONS: Record<string, LucideIcon> = {
+  BookOpen,
+  Cpu,
+  Sigma,
+  Languages,
+  FlaskConical,
+  Landmark,
+  Palette,
+  Dumbbell,
+};
+
 function SubjectIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[name];
+  const Icon = SUBJECT_ICONS[name];
   if (!Icon) return null;
   return <Icon className={className} strokeWidth={1.75} />;
 }
