@@ -10,6 +10,7 @@ export type ModuleId =
   | 'dev'
   | 'assistant'
   | 'objectifs'
+  | 'competences'
   | 'analytics'
   | 'fichiers'
   | 'parametres';
@@ -328,4 +329,15 @@ export interface DashboardWidgetConfig {
   id: string;
   visible: boolean;
   order: number;
+}
+
+// ---------------------------------------------------------------------------
+// Module Compétences
+// ---------------------------------------------------------------------------
+
+export interface Skill {
+  id: string;
+  name: string;
+  level: number; // 0-10
+  createdAt: string; // ISO
 }

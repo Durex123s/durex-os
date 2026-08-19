@@ -12,6 +12,7 @@ const Discipline = lazy(() => import('@/pages/Discipline').then(m => ({ default:
 const Outils = lazy(() => import('@/pages/Outils').then(m => ({ default: m.Outils })));
 const Assistant = lazy(() => import('@/pages/Assistant').then(m => ({ default: m.Assistant })));
 const Objectifs = lazy(() => import('@/pages/Objectifs').then(m => ({ default: m.Objectifs })));
+const Competences = lazy(() => import('@/pages/Competences').then(m => ({ default: m.Competences })));
 const Dev = lazy(() => import('@/pages/Dev').then(m => ({ default: m.Dev })));
 const Analytics = lazy(() => import('@/pages/Analytics').then(m => ({ default: m.Analytics })));
 const Parametres = lazy(() => import('@/pages/Parametres').then(m => ({ default: m.Parametres })));
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
       { path: 'outils', element: withSuspense(<Outils />) },
       { path: 'assistant', element: withSuspense(<Assistant />) },
       { path: 'objectifs', element: withSuspense(<Objectifs />) },
+      { path: 'competences', element: withSuspense(<Competences />) },
       { path: 'dev', element: withSuspense(<Dev />) },
       { path: 'analytics', element: withSuspense(<Analytics />) },
       { path: 'parametres', element: withSuspense(<Parametres />) },
