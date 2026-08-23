@@ -11,6 +11,7 @@ export type ModuleId =
   | 'assistant'
   | 'objectifs'
   | 'competences'
+  | 'business'
   | 'analytics'
   | 'fichiers'
   | 'parametres';
@@ -339,5 +340,26 @@ export interface Skill {
   id: string;
   name: string;
   level: number; // 0-10
+  createdAt: string; // ISO
+}
+
+// ---------------------------------------------------------------------------
+// Module Business
+// ---------------------------------------------------------------------------
+
+export type BusinessStatus = 'idee' | 'test' | 'actif';
+
+export const BUSINESS_STATUS_LABELS: Record<BusinessStatus, string> = {
+  idee: 'Idée',
+  test: 'Test',
+  actif: 'Actif',
+};
+
+export interface BusinessIdea {
+  id: string;
+  name: string;
+  status: BusinessStatus;
+  clients: number;
+  revenue: number; // FCFA, cumulé
   createdAt: string; // ISO
 }

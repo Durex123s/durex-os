@@ -81,7 +81,7 @@ export function SkillsList() {
 
       {creating && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setCreating(false)}>
-          <div className="glass-card w-full max-w-sm p-6 bg-base-900/95" onClick={(e) => e.stopPropagation()}>
+          <div className="glass-card w-full max-w-sm p-6 bg-base-900/95 max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-display text-lg font-semibold text-white">Nouvelle compétence</h3>
               <button onClick={() => setCreating(false)} className="text-muted hover:text-white transition-colors">

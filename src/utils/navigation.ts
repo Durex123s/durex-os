@@ -13,6 +13,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'assistant', label: 'Assistant IA', path: '/assistant', icon: 'Sparkles' },
   { id: 'objectifs', label: 'Objectifs', path: '/objectifs', icon: 'Target' },
   { id: 'competences', label: 'Compétences', path: '/competences', icon: 'Brain' },
+  { id: 'business', label: 'Business', path: '/business', icon: 'Rocket' },
   { id: 'analytics', label: 'Analytics', path: '/analytics', icon: 'BarChart3' },
   { id: 'fichiers', label: 'Fichiers', path: '/fichiers', icon: 'FolderOpen' },
   { id: 'parametres', label: 'Paramètres', path: '/parametres', icon: 'Settings' },

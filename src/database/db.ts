@@ -11,6 +11,7 @@ import type {
   SavingsGoal,
   CategoryBudget,
   Skill,
+  BusinessIdea,
   Habit,
   PomodoroSession,
   AppGoal,
@@ -38,6 +39,7 @@ export class VeyrionDB extends Dexie {
   savingsGoals!: Table<SavingsGoal, string>;
   categoryBudgets!: Table<CategoryBudget, string>;
   skills!: Table<Skill, string>;
+  businessIdeas!: Table<BusinessIdea, string>;
   habits!: Table<Habit, string>;
   pomodoroSessions!: Table<PomodoroSession, string>;
   aiMemory!: Table<AIMemory, string>;
@@ -94,6 +96,9 @@ export class VeyrionDB extends Dexie {
     });
     this.version(11).stores({
       skills: 'id, name, createdAt',
+    });
+    this.version(12).stores({
+      businessIdeas: 'id, status, createdAt',
     });
   }
 }
