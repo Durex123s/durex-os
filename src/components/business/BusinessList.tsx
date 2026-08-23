@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Trash2, X, Rocket } from 'lucide-react';
 import { useBusinessIdeas } from '@/hooks/useBusinessIdeas';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ModalPortal } from '@/components/ui/ModalPortal';
 import { BUSINESS_STATUS_LABELS, type BusinessStatus } from '@/types';
 
 const STATUS_STYLES: Record<BusinessStatus, string> = {
@@ -73,55 +74,61 @@ export function BusinessList() {
       )}
 
       {creating && (
+        <ModalPortal>
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setCreating(false)}>
-          <div className="glass-card w-full max-w-sm p-6 bg-base-900/95 max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass-card w-full max-w-sm bg-base-900/95 max-h-[85dvh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-6 pb-4 shrink-0">
               <h3 className="font-display text-lg font-semibold text-white">Nouvelle idée</h3>
               <button onClick={() => setCreating(false)} className="text-muted hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nom du business"
-              autoFocus
-              className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white focus:border-electric-500 outline-none transition-colors mb-3"
-            />
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as BusinessStatus)}
-              className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white mb-3"
-            >
-              <option value="idee">Idée</option>
-              <option value="test">Test</option>
-              <option value="actif">Actif</option>
-            </select>
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="px-6 overflow-y-auto flex-1 min-h-0">
               <input
-                type="number"
-                value={clients}
-                onChange={(e) => setClients(e.target.value)}
-                placeholder="Clients"
-                className="bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nom du business"
+                autoFocus
+                className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white focus:border-electric-500 outline-none transition-colors mb-3"
               />
-              <input
-                type="number"
-                value={revenue}
-                onChange={(e) => setRevenue(e.target.value)}
-                placeholder="Revenus FCFA"
-                className="bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white"
-              />
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as BusinessStatus)}
+                className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white mb-3"
+              >
+                <option value="idee">Idée</option>
+                <option value="test">Test</option>
+                <option value="actif">Actif</option>
+              </select>
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <input
+                  type="number"
+                  value={clients}
+                  onChange={(e) => setClients(e.target.value)}
+                  placeholder="Clients"
+                  className="bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white"
+                />
+                <input
+                  type="number"
+                  value={revenue}
+                  onChange={(e) => setRevenue(e.target.value)}
+                  placeholder="Revenus FCFA"
+                  className="bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
             </div>
-            <button
-              onClick={handleCreate}
-              disabled={!name.trim()}
-              className="w-full text-sm px-4 py-2 rounded-lg bg-electric-500 hover:bg-electric-600 disabled:opacity-40 disabled:cursor-not-allowed text-onAccent font-medium transition-colors"
-            >
-              Créer
-            </button>
+            <div className="p-6 pt-4 shrink-0">
+              <button
+                onClick={handleCreate}
+                disabled={!name.trim()}
+                className="w-full text-sm px-4 py-2 rounded-lg bg-electric-500 hover:bg-electric-600 disabled:opacity-40 disabled:cursor-not-allowed text-onAccent font-medium transition-colors"
+              >
+                Créer
+              </button>
+            </div>
           </div>
         </div>
+        </ModalPortal>
       )}
     </div>
   );

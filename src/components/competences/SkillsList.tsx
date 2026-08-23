@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Minus, Trash2, X, Brain } from 'lucide-react';
 import { useSkills } from '@/hooks/useSkills';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ModalPortal } from '@/components/ui/ModalPortal';
 
 export function SkillsList() {
   const { skills, addSkill, changeLevel, deleteSkill } = useSkills();
@@ -80,30 +81,36 @@ export function SkillsList() {
       )}
 
       {creating && (
+        <ModalPortal>
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setCreating(false)}>
-          <div className="glass-card w-full max-w-sm p-6 bg-base-900/95 max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass-card w-full max-w-sm bg-base-900/95 max-h-[85dvh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-6 pb-4 shrink-0">
               <h3 className="font-display text-lg font-semibold text-white">Nouvelle compétence</h3>
               <button onClick={() => setCreating(false)} className="text-muted hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ex : Programmation"
-              autoFocus
-              className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white focus:border-electric-500 outline-none transition-colors mb-4"
-            />
-            <button
-              onClick={handleCreate}
-              disabled={!name.trim()}
-              className="w-full text-sm px-4 py-2 rounded-lg bg-electric-500 hover:bg-electric-600 disabled:opacity-40 disabled:cursor-not-allowed text-onAccent font-medium transition-colors"
-            >
-              Créer
-            </button>
+            <div className="px-6 overflow-y-auto flex-1 min-h-0">
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ex : Programmation"
+                autoFocus
+                className="w-full bg-base-800 border border-base-600 rounded-lg px-3 py-2 text-sm text-white focus:border-electric-500 outline-none transition-colors mb-4"
+              />
+            </div>
+            <div className="p-6 pt-4 shrink-0">
+              <button
+                onClick={handleCreate}
+                disabled={!name.trim()}
+                className="w-full text-sm px-4 py-2 rounded-lg bg-electric-500 hover:bg-electric-600 disabled:opacity-40 disabled:cursor-not-allowed text-onAccent font-medium transition-colors"
+              >
+                Créer
+              </button>
+            </div>
           </div>
         </div>
+        </ModalPortal>
       )}
     </div>
   );
