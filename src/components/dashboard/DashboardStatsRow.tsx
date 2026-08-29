@@ -53,13 +53,26 @@ export function DashboardStatsRow() {
     },
   ];
 
+  function statusColor(index: number) {
+    if (index === 0) return productivite >= 65 ? 'text-success' : productivite >= 40 ? 'text-warning' : 'text-danger';
+    if (index === 3) return disciplineScore >= 65 ? 'text-success' : disciplineScore >= 40 ? 'text-warning' : 'text-danger';
+    return 'text-electric-400';
+  }
+
   return (
     <div className="grid grid-cols-4 gap-2 sm:gap-4">
-      {stats.map((s) => (
-        <div key={s.label} className="glass-card p-2.5 sm:p-4">
-          <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted mb-1.5 sm:mb-2">
-            <s.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-            <span className="truncate">{s.label}</span>
+      {stats.map((s, i) => (
+        <div
+          key={s.label}
+          className="glass-card p-2.5 sm:p-4 animate-fadeUp"
+          style={{ animationDelay: `${i * 70}ms` }}
+        >
+          <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted min-w-0">
+              <s.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <span className="truncate">{s.label}</span>
+            </div>
+            <span className={`status-dot w-1.5 h-1.5 rounded-full shrink-0 ${statusColor(i)} bg-current`} />
           </div>
           <p className="font-display text-base sm:text-2xl font-semibold text-white leading-tight">{s.value}</p>
           <p className="text-[10px] sm:text-xs text-electric-400 mt-0.5 truncate">{s.hint}</p>
