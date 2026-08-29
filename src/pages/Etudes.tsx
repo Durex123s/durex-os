@@ -3,6 +3,7 @@ import { Plus, X, BookOpen } from 'lucide-react';
 import { useSubjects } from '@/hooks/useSubjects';
 import { SubjectCard } from '@/components/etudes/SubjectCard';
 import { EtudesOverview } from '@/components/etudes/EtudesOverview';
+import { DestinationsSection } from '@/components/etudes/DestinationsSection';
 import { EmptyState } from '@/components/ui/EmptyState';
 
 const ICON_CHOICES = ['BookOpen', 'Cpu', 'Sigma', 'Languages', 'FlaskConical', 'Landmark', 'Palette', 'Dumbbell'];
@@ -39,6 +40,8 @@ export function Etudes() {
       </div>
 
       <EtudesOverview />
+
+      <DestinationsSection />
 
       {subjects.length === 0 ? (
         <EmptyState

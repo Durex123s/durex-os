@@ -343,6 +343,21 @@ export interface Skill {
   createdAt: string; // ISO
 }
 
+export interface DestinationDocument {
+  id: string;
+  label: string;
+  done: boolean;
+}
+
+export interface StudyDestination {
+  id: string;
+  country: string;
+  priority: number;
+  languageLevel: number; // 0-100
+  documents: DestinationDocument[];
+  createdAt: string; // ISO
+}
+
 // ---------------------------------------------------------------------------
 // Module Business
 // ---------------------------------------------------------------------------

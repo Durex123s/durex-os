@@ -21,6 +21,7 @@ import type {
   DevIdea,
   AppSettings,
   Attachment,
+  StudyDestination,
 } from '@/types';
 import type { AIMemory } from '@/ai/types';
 
@@ -50,6 +51,7 @@ export class VeyrionDB extends Dexie {
   devIdeas!: Table<DevIdea, string>;
   settings!: Table<AppSettings, string>;
   attachments!: Table<Attachment, string>;
+  destinations!: Table<StudyDestination, string>;
 
   constructor() {
     super('veyrion');
@@ -99,6 +101,9 @@ export class VeyrionDB extends Dexie {
     });
     this.version(12).stores({
       businessIdeas: 'id, status, createdAt',
+    });
+    this.version(13).stores({
+      destinations: 'id, priority, createdAt',
     });
   }
 }
