@@ -22,6 +22,7 @@ import type {
   AppSettings,
   Attachment,
   StudyDestination,
+  RoadmapMonth,
 } from '@/types';
 import type { AIMemory } from '@/ai/types';
 
@@ -52,6 +53,7 @@ export class VeyrionDB extends Dexie {
   settings!: Table<AppSettings, string>;
   attachments!: Table<Attachment, string>;
   destinations!: Table<StudyDestination, string>;
+  roadmap!: Table<RoadmapMonth, string>;
 
   constructor() {
     super('veyrion');
@@ -104,6 +106,9 @@ export class VeyrionDB extends Dexie {
     });
     this.version(13).stores({
       destinations: 'id, priority, createdAt',
+    });
+    this.version(14).stores({
+      roadmap: 'id, phase',
     });
   }
 }

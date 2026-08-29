@@ -4,6 +4,7 @@ import { useGoals } from '@/hooks/useGoals';
 import { GoalCard } from '@/components/objectifs/GoalCard';
 import { GoalModal } from '@/components/objectifs/GoalModal';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { RoadmapSection } from '@/components/objectifs/RoadmapSection';
 
 export function Objectifs() {
   const { goals, addGoal, deleteGoal, logProgress } = useGoals();
@@ -49,6 +50,8 @@ export function Objectifs() {
           ))}
         </div>
       )}
+
+      <RoadmapSection />
 
       {modalOpen && <GoalModal onClose={() => setModalOpen(false)} onSave={addGoal} />}
     </div>

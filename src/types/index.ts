@@ -358,6 +358,14 @@ export interface StudyDestination {
   createdAt: string; // ISO
 }
 
+export interface RoadmapMonth {
+  id: string;
+  phase: number; // 1-4
+  monthLabel: string; // ex : "Mois 1"
+  title: string;
+  done: boolean;
+}
+
 // ---------------------------------------------------------------------------
 // Module Business
 // ---------------------------------------------------------------------------
