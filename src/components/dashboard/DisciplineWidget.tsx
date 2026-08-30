@@ -14,10 +14,13 @@ export function DisciplineWidget() {
   const { score, bestStreak } = useDisciplineScore();
   const totals = useTodayPomodoroTotals();
 
+  const status = score >= 65 ? 'ok' : score >= 40 ? 'warning' : 'danger';
+
   return (
     <WidgetCard
       title="Discipline"
       icon={<Flame className="w-4 h-4" />}
+      status={status}
       action={
         <Link to="/discipline" className="text-xs text-electric-400 hover:underline">
           Voir tout

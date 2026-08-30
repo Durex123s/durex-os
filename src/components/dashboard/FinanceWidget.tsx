@@ -13,10 +13,14 @@ export function FinanceWidget() {
   const { solde, totalRevenus, totalDepenses, budgets } = useTransactions();
   const overBudget = budgets.day.spent > budgets.day.limit;
 
+  const usageRatio = budgets.day.limit > 0 ? budgets.day.spent / budgets.day.limit : 0;
+  const status = overBudget ? 'danger' : usageRatio >= 0.8 ? 'warning' : 'ok';
+
   return (
     <WidgetCard
       title="Finances"
       icon={<Wallet className="w-4 h-4" />}
+      status={status}
       action={
         <Link to="/finances" className="text-xs text-electric-400 hover:underline">
           Voir tout
