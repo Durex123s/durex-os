@@ -36,7 +36,7 @@ export function Finances() {
 
       <PeriodToggle value={period} onChange={setPeriod} />
 
-      <div className="glass-card p-4 flex items-center justify-between">
+      <div className="glass-card p-4 flex items-center justify-between animate-fadeUp" style={{ animationDelay: '0ms' }}>
         <div>
           <p className="text-xs text-muted">Épargne possible aujourd'hui</p>
           <p className="text-muted text-[11px] mt-0.5">Revenus du jour moins dépenses du jour</p>
@@ -48,19 +48,19 @@ export function Finances() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card p-5">
+        <div className="glass-card p-5 animate-fadeUp" style={{ animationDelay: '70ms' }}>
           <p className="text-xs text-muted">Solde actuel</p>
           <p className="text-2xl font-display font-semibold text-white mt-1">
             <AnimatedNumber value={solde} format={(n) => `${n.toLocaleString('fr-FR')} FCFA`} />
           </p>
         </div>
-        <div className="glass-card p-5">
+        <div className="glass-card p-5 animate-fadeUp" style={{ animationDelay: '140ms' }}>
           <p className="text-xs text-muted">Revenus ({period})</p>
           <p className="text-2xl font-display font-semibold text-success mt-1">
             +<AnimatedNumber value={periodRevenus} />
           </p>
         </div>
-        <div className="glass-card p-5">
+        <div className="glass-card p-5 animate-fadeUp" style={{ animationDelay: '210ms' }}>
           <p className="text-xs text-muted">Dépenses ({period})</p>
           <p className="text-2xl font-display font-semibold text-danger mt-1">
             -<AnimatedNumber value={periodDepenses} />

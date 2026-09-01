@@ -2,10 +2,21 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/database/db';
 import { Flame, Timer, CalendarCheck } from 'lucide-react';
 import { computeBestStreak, habitDaysThisWeek, pomodoroMinutesThisWeek } from '@/utils/discipline';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 
-function StatBlock({ icon: Icon, value, label }: { icon: typeof Flame; value: string; label: string }) {
+function StatBlock({
+  icon: Icon,
+  value,
+  label,
+  delay,
+}: {
+  icon: typeof Flame;
+  value: React.ReactNode;
+  label: string;
+  delay: number;
+}) {
   return (
-    <div className="flex flex-col items-center gap-1.5 py-3">
+    <div className="flex flex-col items-center gap-1.5 py-3 animate-fadeUp" style={{ animationDelay: `${delay}ms` }}>
       <div className="w-9 h-9 rounded-xl bg-electric-500/10 border border-electric-500/30 flex items-center justify-center">
         <Icon className="w-4 h-4 text-electric-400" />
       </div>
@@ -30,9 +41,24 @@ export function DisciplineStats() {
       <h3 className="text-sm font-medium text-white mb-1">Statistiques</h3>
       <p className="text-xs text-muted mb-2">Ta progression sur les 7 derniers jours.</p>
       <div className="grid grid-cols-3 divide-x divide-base-700">
-        <StatBlock icon={Flame} value={`${bestStreakOverall}j`} label="Meilleur streak" />
-        <StatBlock icon={CalendarCheck} value={`${activeDaysThisWeek}/7`} label="Jours actifs" />
-        <StatBlock icon={Timer} value={`${pomoMinutesWeek}min`} label="Pomodoro (semaine)" />
+        <StatBlock
+          icon={Flame}
+          value={<AnimatedNumber value={bestStreakOverall} format={(n) => `${n}j`} />}
+          label="Meilleur streak"
+          delay={0}
+        />
+        <StatBlock
+          icon={CalendarCheck}
+          value={<AnimatedNumber value={activeDaysThisWeek} format={(n) => `${n}/7`} />}
+          label="Jours actifs"
+          delay={70}
+        />
+        <StatBlock
+          icon={Timer}
+          value={<AnimatedNumber value={pomoMinutesWeek} format={(n) => `${n}min`} />}
+          label="Pomodoro (semaine)"
+          delay={140}
+        />
       </div>
     </div>
   );

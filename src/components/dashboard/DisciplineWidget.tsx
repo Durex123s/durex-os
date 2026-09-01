@@ -3,6 +3,7 @@ import { WidgetCard } from './WidgetCard';
 import { Flame, Briefcase, Coffee } from 'lucide-react';
 import { useDisciplineScore } from '@/hooks/useDisciplineScore';
 import { useTodayPomodoroTotals } from '@/hooks/usePomodoro';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 
 function formatMinutes(min: number) {
   const h = Math.floor(min / 60);
@@ -29,7 +30,7 @@ export function DisciplineWidget() {
     >
       <div className="flex items-center gap-4 mb-4">
         <div className="w-14 h-14 rounded-full border-2 border-electric-500 flex items-center justify-center font-display font-semibold text-lg shrink-0">
-          {score}
+          <AnimatedNumber value={score} />
         </div>
         <div>
           <p className="text-sm text-white">Score de discipline</p>

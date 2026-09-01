@@ -7,8 +7,10 @@ export function SmartNotificationsWidget() {
 
   if (notifications.length === 0) return null;
 
+  const status = notifications.some((n) => n.level === 'warning') ? 'danger' : 'ok';
+
   return (
-    <WidgetCard title="Notifications intelligentes" icon={<Bell className="w-4 h-4" />}>
+    <WidgetCard title="Notifications intelligentes" icon={<Bell className="w-4 h-4" />} status={status}>
       <ul className="space-y-2">
         {notifications.map((n) => (
           <li
