@@ -4,6 +4,7 @@ import { db } from '@/database/db';
 import type { PomodoroType } from '@/types';
 import { schedulePomodoroEnd, cancelPomodoroEnd } from '@/services/notifications';
 import { useAppSettings } from './useAppSettings';
+import { useCharacter } from '@/store/useCharacter';
 
 const DEFAULT_DURATIONS: Record<PomodoroType, number> = { etude: 25, travail: 25, repos: 5 };
 const TYPE_LABELS: Record<PomodoroType, string> = { etude: 'Étude', travail: 'Travail', repos: 'Repos' };
@@ -25,6 +26,7 @@ function parseDurations(raw: string | null): Record<PomodoroType, number> {
 
 export function usePomodoro() {
   const { get, set } = useAppSettings();
+  const react = useCharacter((s) => s.react);
   const rawDurations = get(SETTING_KEY);
   const DURATIONS = useMemo(() => parseDurations(rawDurations), [rawDurations]);
 
@@ -72,7 +74,8 @@ export function usePomodoro() {
       durationMinutes,
       completedAt: new Date().toISOString(),
     });
-  }, []);
+    react('success', { duration: 3000 });
+  }, [react]);
 
   useEffect(() => {
     if (!running) return;

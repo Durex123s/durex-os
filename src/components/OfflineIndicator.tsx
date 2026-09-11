@@ -1,22 +1,30 @@
 import { useEffect, useState } from 'react';
 import { WifiOff } from 'lucide-react';
+import { useCharacter } from '@/store/useCharacter';
 
 // Bandeau discret affiché uniquement quand le navigateur détecte une perte
 // de connexion — rassure l'utilisateur que l'app continue de fonctionner
 // (tout est en local/IndexedDB) plutôt que de le laisser deviner.
 export function OfflineIndicator() {
   const [online, setOnline] = useState(navigator.onLine);
+  const react = useCharacter((s) => s.react);
 
   useEffect(() => {
-    const goOnline = () => setOnline(true);
-    const goOffline = () => setOnline(false);
+    const goOnline = () => {
+      setOnline(true);
+      react('connection', { duration: 2500 });
+    };
+    const goOffline = () => {
+      setOnline(false);
+      react('disconnection', { duration: 2500 });
+    };
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
     return () => {
       window.removeEventListener('online', goOnline);
       window.removeEventListener('offline', goOffline);
     };
-  }, []);
+  }, [react]);
 
   if (online) return null;
 

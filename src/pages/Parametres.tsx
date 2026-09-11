@@ -5,7 +5,6 @@ import { ThemeSection } from '@/components/parametres/ThemeSection';
 import { AccentColorSection } from '@/components/parametres/AccentColorSection';
 import { TypographySection } from '@/components/parametres/TypographySection';
 import { SavingsPercentSection } from '@/components/parametres/SavingsPercentSection';
-import { AvatarCustomSection } from '@/components/parametres/AvatarCustomSection';
 import { BackupSection } from '@/components/parametres/BackupSection';
 import { PersonalizationSection } from '@/components/parametres/PersonalizationSection';
 import { ElectricianToolsSection } from '@/components/parametres/ElectricianToolsSection';
@@ -37,7 +36,6 @@ export function Parametres() {
         <AccentColorSection />
         <TypographySection />
         <SavingsPercentSection />
-        <AvatarCustomSection />
         <BackupSection />
         <PersonalizationSection />
         <ElectricianToolsSection />

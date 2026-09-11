@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/database/db';
 import type { Habit } from '@/types';
+import { useCharacter } from '@/store/useCharacter';
 import { scheduleHabitReminder, cancelHabitReminder } from '@/services/notifications';
 
 function todayISO() {
@@ -22,29 +23,27 @@ function computeStreak(dates: string[]): number {
 
 export function useHabits() {
   const habits = useLiveQuery(() => db.habits.toArray(), [], []);
+  const react = useCharacter((s) => s.react);
 
   async function addHabit(habit: Habit) {
     await db.habits.add(habit);
-    if (habit.reminderTime) {
-      await scheduleHabitReminder(habit.id, habit.name, habit.reminderTime);
-    }
+    if (habit.reminderTime) await scheduleHabitReminder(habit.id, habit.name, habit.reminderTime);
   }
-
   async function deleteHabit(id: string) {
     await db.habits.delete(id);
     await cancelHabitReminder(id);
   }
-
   async function toggleToday(id: string) {
     const h = await db.habits.get(id);
     if (!h) return;
     const today = todayISO();
-    const completedDates = h.completedDates.includes(today)
+    const wasDone = h.completedDates.includes(today);
+    const completedDates = wasDone
       ? h.completedDates.filter((d) => d !== today)
       : [...h.completedDates, today];
     await db.habits.put({ ...h, completedDates });
+    if (!wasDone) react('encouragement');
   }
-
   async function setReminder(id: string, time: string | undefined) {
     const h = await db.habits.get(id);
     if (!h) return;

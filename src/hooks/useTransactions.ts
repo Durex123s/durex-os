@@ -4,6 +4,7 @@ import { db } from '@/database/db';
 import { scheduleWeeklySavingsReminder, cancelWeeklySavingsReminder } from '@/services/notifications';
 import type { Transaction, SavingsGoal } from '@/types';
 import { useAppSettings } from './useAppSettings';
+import { useCharacter } from '@/store/useCharacter';
 import { DEFAULT_SAVINGS_PERCENT } from '@/components/parametres/SavingsPercentSection';
 
 function startOfDayISO(d: Date) {
@@ -129,6 +130,7 @@ export function useTransactions(period: Period = 'total') {
 
 export function useSavingsGoals() {
   const goals = useLiveQuery(() => db.savingsGoals.toArray(), [], []);
+  const react = useCharacter((s) => s.react);
 
   useEffect(() => {
     if (goals === undefined) return;
@@ -149,7 +151,12 @@ export function useSavingsGoals() {
   }
   async function contribute(id: string, amount: number) {
     const g = await db.savingsGoals.get(id);
-    if (g) await db.savingsGoals.put({ ...g, current: g.current + amount });
+    if (!g) return;
+    const newCurrent = g.current + amount;
+    await db.savingsGoals.put({ ...g, current: newCurrent });
+    if (g.target > 0 && g.current < g.target && newCurrent >= g.target) {
+      react('big_success', { duration: 4000 });
+    }
   }
   async function deleteGoal(id: string) {
     await db.savingsGoals.delete(id);

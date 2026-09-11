@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/database/db';
 import type { AppGoal, GoalMode, GoalAutoSource } from '@/types';
+import { useCharacter } from '@/store/useCharacter';
 
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
@@ -29,6 +30,7 @@ async function computeCurrent(goal: AppGoal): Promise<number> {
 
 export function useGoals() {
   const rawGoals = useLiveQuery(() => db.goals.toArray(), [], []);
+  const react = useCharacter((s) => s.react);
 
   const goalsWithProgress = useLiveQuery(async () => {
     const list = rawGoals ?? [];
@@ -56,8 +58,13 @@ export function useGoals() {
     const goal = await db.goals.get(id);
     if (!goal || goal.autoSource) return;
     const key = goal.mode === 'quotidien' ? todayISO() : 'total';
-    const manualLog = { ...goal.manualLog, [key]: (goal.manualLog[key] ?? 0) + amount };
+    const before = goal.manualLog[key] ?? 0;
+    const after = before + amount;
+    const manualLog = { ...goal.manualLog, [key]: after };
     await db.goals.put({ ...goal, manualLog });
+    if (goal.target > 0 && before < goal.target && after >= goal.target) {
+      react('achievement', { duration: 3500 });
+    }
   }
 
   return { goals: goalsWithProgress ?? [], addGoal, deleteGoal, logProgress };
