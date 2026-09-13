@@ -6,6 +6,7 @@ import { MobileBottomNav } from './MobileBottomNav';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { GlobalSearch } from '@/components/search/GlobalSearch';
 import { DynamicCharacter } from '@/components/character/DynamicCharacter';
+import { CharacterFloating } from '@/components/character/CharacterFloating';
 import { getPageState } from '@/character/states';
 import { useCharacter } from '@/store/useCharacter';
 
@@ -43,6 +44,7 @@ export function MainLayout() {
       </main>
 
       <MobileBottomNav />
+      <CharacterFloating />
     </div>
   );
 }
