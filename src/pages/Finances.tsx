@@ -48,9 +48,9 @@ export function Finances() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card p-5 animate-fadeUp" style={{ animationDelay: '70ms' }}>
-          <p className="text-xs text-muted">Solde actuel</p>
-          <p className="text-2xl font-display font-semibold text-white mt-1">
+        <div className="hero-card p-5 animate-fadeUp" style={{ animationDelay: '70ms' }}>
+          <p className="text-xs text-muted relative">Solde actuel</p>
+          <p className="text-2xl font-display font-semibold text-white mt-1 relative">
             <AnimatedNumber value={solde} format={(n) => `${n.toLocaleString('fr-FR')} FCFA`} />
           </p>
         </div>

@@ -14,6 +14,7 @@
     --color-on-accent: 4 6 15;
     --color-accent: 34 211 238;
     --color-accent-2: 168 85 247;
+    --color-gold: 255 209 102;
     --font-scale: 1;
     --font-display: 'Orbitron', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -30,6 +31,7 @@
     --color-on-accent: 4 6 15;
     --color-accent: 34 211 238;
     --color-accent-2: 168 85 247;
+    --color-gold: 217 158 44;
   }
 
   * {
@@ -67,14 +69,53 @@
 
 @layer components {
   .glass-card {
-    @apply relative border border-white/[0.07] rounded-xl2 overflow-hidden;
+    @apply relative border border-white/[0.07] rounded-xl3 overflow-hidden;
     background: linear-gradient(165deg, rgb(var(--color-bg-800) / 0.7) 0%, rgb(var(--color-bg-900) / 0.72) 55%, rgb(var(--color-bg-950) / 0.78) 100%);
     backdrop-filter: blur(8px);
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.45),
-      0 8px 16px -4px rgba(0, 0, 0, 0.45),
-      0 24px 40px -12px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      0 1px 2px rgba(0, 0, 0, 0.5),
+      0 10px 20px -8px rgba(0, 0, 0, 0.5),
+      0 30px 50px -16px rgba(0, 0, 0, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  /* Carte "hero" : version plus marquée pour les blocs les plus importants
+     d'une page (ex: solde principal, en-tête de section). À utiliser avec
+     parcimonie — un seul hero par écran, sinon l'effet perd sa force. */
+  .hero-card {
+    @apply relative border border-white/[0.08] rounded-xl3 overflow-hidden;
+    background: linear-gradient(155deg, rgb(var(--color-accent-2) / 0.16), rgb(var(--color-bg-800) / 0.4) 55%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 30px 60px -20px rgba(0, 0, 0, 0.65),
+      0 0 40px -10px rgb(var(--color-accent-2) / 0.35);
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgb(var(--color-accent) / 0.35), transparent 70%);
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  /* Titre en dégradé — à réserver aux titres de page (h1), pas aux
+     sous-titres, pour ne pas diluer l'effet. */
+  .gradient-heading {
+    background: linear-gradient(120deg, rgb(var(--color-text)), rgb(var(--color-muted)) 60%, rgb(var(--color-accent)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .badge-gold {
+    @apply text-[10px] px-2.5 py-1 rounded-full;
+    color: rgb(var(--color-gold));
+    background: rgb(var(--color-gold) / 0.12);
+    border: 1px solid rgb(var(--color-gold) / 0.3);
   }
   .glass-card::before {
     content: '';

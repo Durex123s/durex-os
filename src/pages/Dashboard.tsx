@@ -73,7 +73,7 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">
+        <h1 className="font-display text-2xl font-semibold gradient-heading">
           {getGreeting()}{name ? `, ${name}` : ''} 👋
         </h1>
         <p className="text-muted text-sm mt-1">Voici un aperçu de ta journée.</p>

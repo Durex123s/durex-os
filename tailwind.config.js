@@ -33,7 +33,7 @@ export default {
       },
       borderRadius: {
         xl2: '1rem',
-        xl3: '1.375rem',
+        xl3: '1.625rem',
       },
       boxShadow: {
         glow: '0 0 24px rgb(var(--color-accent) / 0.25)',
