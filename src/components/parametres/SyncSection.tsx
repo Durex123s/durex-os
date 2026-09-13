@@ -3,9 +3,11 @@ import { Cloud, CloudOff, LogOut, UploadCloud, DownloadCloud, CheckCircle2, Wifi
 import { useSupabaseAuth } from '@/hooks/useSupabaseAuth';
 import { pushBackupToCloud, pullBackupFromCloud } from '@/services/cloudSync';
 import { supabaseDebugInfo } from '@/services/supabaseClient';
+import { useCharacter } from '@/store/useCharacter';
 
 export function SyncSection() {
   const { user, loading, signUp, signIn, signOut, isConfigured } = useSupabaseAuth();
+  const react = useCharacter((s) => s.react);
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,15 +20,18 @@ export function SyncSection() {
     setBusy('test');
     setTestResult('');
     setError('');
+    react('loading');
     try {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/health`, {
         headers: { apikey: import.meta.env.VITE_SUPABASE_ANON_KEY as string },
       });
       const body = await res.text();
       setTestResult(`Statut HTTP ${res.status} — ${body.slice(0, 120)}`);
+      react('connection', { duration: 2000 });
     } catch (e) {
       const err = e as Error;
       setTestResult(`ÉCHEC — ${err.name}: ${err.message}`);
+      react('error', { duration: 3000 });
     } finally {
       setBusy(null);
     }
@@ -35,6 +40,7 @@ export function SyncSection() {
   const handleAuth = async () => {
     setError('');
     setBusy('auth');
+    react('loading');
     try {
       if (mode === 'signup') {
         await signUp(email, password);
@@ -42,10 +48,12 @@ export function SyncSection() {
       } else {
         await signIn(email, password);
       }
+      react('success', { duration: 2500 });
     } catch (e) {
       const err = e as Error & { cause?: unknown };
       const detail = [err.name, err.message, err.cause ? String(err.cause) : null].filter(Boolean).join(' — ');
       setError(detail || 'Erreur inconnue.');
+      react('error', { duration: 3000 });
     } finally {
       setBusy(null);
     }
@@ -55,12 +63,15 @@ export function SyncSection() {
     if (!user) return;
     setBusy('push');
     setError('');
+    react('loading');
     try {
       await pushBackupToCloud(user.id);
       setMessage('Sauvegarde envoyée sur le cloud.');
       setTimeout(() => setMessage(''), 4000);
+      react('success', { duration: 2500 });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Échec de la sauvegarde.');
+      react('error', { duration: 3000 });
     } finally {
       setBusy(null);
     }
@@ -71,6 +82,7 @@ export function SyncSection() {
     if (!confirm('Ça va remplacer les données locales par celles du cloud. Continuer ?')) return;
     setBusy('pull');
     setError('');
+    react('loading');
     try {
       const { tablesRestored, updatedAt } = await pullBackupFromCloud(user.id);
       setMessage(
@@ -79,8 +91,10 @@ export function SyncSection() {
           : "Aucune sauvegarde trouvée sur ce compte pour l'instant."
       );
       setTimeout(() => setMessage(''), 5000);
+      react('success', { duration: 2500 });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Échec de la restauration.');
+      react('error', { duration: 3000 });
     } finally {
       setBusy(null);
     }
