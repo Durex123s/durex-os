@@ -45,7 +45,7 @@ export function Planning() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">Emploi du temps</h1>
+        <h1 className="font-display text-2xl font-semibold gradient-heading">Emploi du temps</h1>
         <p className="text-muted text-sm mt-1">Cours, rendez-vous, examens et rappels intelligents.</p>
       </div>
 

@@ -15,7 +15,7 @@ export function Parametres() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">Paramètres</h1>
+        <h1 className="font-display text-2xl font-semibold gradient-heading">Paramètres</h1>
         <p className="text-muted text-sm mt-1">Profil, sauvegarde, personnalisation, sécurité et synchronisation.</p>
       </div>
 

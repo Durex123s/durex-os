@@ -9,7 +9,7 @@ export function Discipline() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">Discipline</h1>
+        <h1 className="font-display text-2xl font-semibold gradient-heading">Discipline</h1>
         <p className="text-muted text-sm mt-1">Habitudes, Pomodoro, statistiques et récompenses.</p>
       </div>
 

@@ -41,7 +41,7 @@ export function SubjectPage() {
         <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${subject.color}22`, color: subject.color }}>
           {subject.name[0]}
         </div>
-        <h1 className="font-display text-2xl font-semibold text-white">{subject.name}</h1>
+        <h1 className="font-display text-2xl font-semibold gradient-heading">{subject.name}</h1>
       </div>
 
       <div className="flex gap-1 bg-base-800 rounded-xl p-1 w-fit overflow-x-auto max-w-full">

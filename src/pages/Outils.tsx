@@ -42,7 +42,7 @@ export function Outils() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-white">Outils électricien</h1>
+        <h1 className="font-display text-2xl font-semibold gradient-heading">Outils électricien</h1>
         <p className="text-muted text-sm mt-1">Calculatrices professionnelles et bibliothèque de symboles.</p>
       </div>
 

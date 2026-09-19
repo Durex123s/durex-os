@@ -79,7 +79,7 @@ export function Nouveautes() {
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="font-display text-2xl font-semibold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-semibold gradient-heading flex items-center gap-2">
             <Rocket className="w-5 h-5 text-electric-400" />
             Nouveautés
           </h1>

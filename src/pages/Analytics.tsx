@@ -34,7 +34,7 @@ export function Analytics() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-white">Analytics</h1>
+          <h1 className="font-display text-2xl font-semibold gradient-heading">Analytics</h1>
           <p className="text-muted text-sm mt-1">Vue d'ensemble des {range} derniers jours.</p>
         </div>
         <div className="flex gap-1.5 bg-base-800 rounded-xl p-1">

@@ -36,7 +36,7 @@ export function Assistant() {
       {dialog}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-white">Assistant IA</h1>
+          <h1 className="font-display text-2xl font-semibold gradient-heading">Assistant IA</h1>
           <p className="text-muted text-sm mt-1">Planification, analyse, études — par texte ou par voix.</p>
         </div>
         {messages.length > 0 && (

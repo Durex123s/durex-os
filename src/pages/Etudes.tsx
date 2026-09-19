@@ -27,7 +27,7 @@ export function Etudes() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-white">Études</h1>
+          <h1 className="font-display text-2xl font-semibold gradient-heading">Études</h1>
           <p className="text-muted text-sm mt-1">Tes matières, cours, fiches et quiz — en un seul endroit.</p>
         </div>
         <button

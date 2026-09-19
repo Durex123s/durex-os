@@ -18,7 +18,7 @@ export function Dev() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-white">Espace développeur</h1>
+          <h1 className="font-display text-2xl font-semibold gradient-heading">Espace développeur</h1>
           <p className="text-muted text-sm mt-1">Projets, idées et snippets — ton carnet de dev.</p>
         </div>
         {tab === 'projets' && (
