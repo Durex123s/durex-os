@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ interface CalendarHeaderProps {
   onNext: () => void;
   onToday: () => void;
   onCreate: () => void;
+  onExport: () => void;
 }
 
 const VIEWS: CalendarView[] = ['jour', 'semaine', 'mois'];
@@ -25,6 +26,7 @@ export function CalendarHeader({
   onNext,
   onToday,
   onCreate,
+  onExport,
 }: CalendarHeaderProps) {
   const label =
     view === 'mois'
@@ -63,6 +65,14 @@ export function CalendarHeader({
             </button>
           ))}
         </div>
+        <button
+          onClick={onExport}
+          className="p-2 rounded-lg border border-base-600 text-muted hover:text-white hover:border-electric-500/40 transition-colors"
+          aria-label="Exporter au format .ics"
+          title="Exporter au format .ics"
+        >
+          <Download className="w-4 h-4" />
+        </button>
         <button
           onClick={onCreate}
           className="flex items-center gap-1.5 bg-electric-500 hover:bg-electric-600 text-onAccent font-medium text-sm px-3 py-1.5 rounded-lg transition-colors shadow-glow"

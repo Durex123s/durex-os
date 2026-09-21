@@ -7,6 +7,7 @@ import { DayView } from '@/components/calendar/DayView';
 import { EventModal } from '@/components/calendar/EventModal';
 import { useEvents } from '@/hooks/useEvents';
 import { requestNotificationPermission } from '@/services/reminders';
+import { exportEventsToICS } from '@/services/icsExport';
 import type { CalendarEvent } from '@/types';
 
 export function Planning() {
@@ -57,6 +58,7 @@ export function Planning() {
         onNext={goNext}
         onToday={() => setReference(new Date())}
         onCreate={() => openCreate(reference)}
+        onExport={exportEventsToICS}
       />
 
       {view === 'mois' && (
