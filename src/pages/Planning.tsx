@@ -7,7 +7,7 @@ import { DayView } from '@/components/calendar/DayView';
 import { EventModal } from '@/components/calendar/EventModal';
 import { useEvents } from '@/hooks/useEvents';
 import { requestNotificationPermission } from '@/services/reminders';
-import { exportEventsToICS } from '@/services/icsExport';
+import { exportEventsToICS, importEventsFromICS } from '@/services/icsExport';
 import type { CalendarEvent } from '@/types';
 
 export function Planning() {
@@ -16,6 +16,13 @@ export function Planning() {
   const [view, setView] = useState<CalendarView>('mois');
   const [modalDate, setModalDate] = useState<Date | null>(null);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
+  const [importResult, setImportResult] = useState<{ imported: number; skipped: number } | null>(null);
+
+  const handleImport = async (file: File) => {
+    const result = await importEventsFromICS(file);
+    setImportResult(result);
+    setTimeout(() => setImportResult(null), 4000);
+  };
 
   useEffect(() => {
     requestNotificationPermission();
@@ -59,7 +66,15 @@ export function Planning() {
         onToday={() => setReference(new Date())}
         onCreate={() => openCreate(reference)}
         onExport={exportEventsToICS}
+        onImport={handleImport}
       />
+
+      {importResult && (
+        <div className="text-xs text-success glass-card px-3 py-2">
+          {importResult.imported} événement(s) importé(s)
+          {importResult.skipped > 0 ? `, ${importResult.skipped} ignoré(s)` : ''}.
+        </div>
+      )}
 
       {view === 'mois' && (
         <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">

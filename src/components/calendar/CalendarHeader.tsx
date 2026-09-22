@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight, Plus, Download } from 'lucide-react';
+import { useRef, type ChangeEvent } from 'react';
+import { ChevronLeft, ChevronRight, Plus, Download, Upload } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import clsx from 'clsx';
@@ -14,6 +15,7 @@ interface CalendarHeaderProps {
   onToday: () => void;
   onCreate: () => void;
   onExport: () => void;
+  onImport: (file: File) => void;
 }
 
 const VIEWS: CalendarView[] = ['jour', 'semaine', 'mois'];
@@ -27,7 +29,15 @@ export function CalendarHeader({
   onToday,
   onCreate,
   onExport,
+  onImport,
 }: CalendarHeaderProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) onImport(file);
+    e.target.value = '';
+  };
   const label =
     view === 'mois'
       ? format(reference, 'MMMM yyyy', { locale: fr })
@@ -73,6 +83,15 @@ export function CalendarHeader({
         >
           <Download className="w-4 h-4" />
         </button>
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="p-2 rounded-lg border border-base-600 text-muted hover:text-white hover:border-electric-500/40 transition-colors"
+          aria-label="Importer un fichier .ics"
+          title="Importer un fichier .ics"
+        >
+          <Upload className="w-4 h-4" />
+        </button>
+        <input ref={fileInputRef} type="file" accept=".ics,text/calendar" onChange={handleFileChange} className="hidden" />
         <button
           onClick={onCreate}
           className="flex items-center gap-1.5 bg-electric-500 hover:bg-electric-600 text-onAccent font-medium text-sm px-3 py-1.5 rounded-lg transition-colors shadow-glow"
